@@ -39,7 +39,6 @@ export default {
     methods: {
         // 编辑按钮 点击事件
         alterSpace(thisSpace){
-            console.log('使用情况',thisSpace);
             this.modifySpaceParam.attachmentLimit = '';         // 每次点击编辑 清空上次输入
             this.modifySpaceData.modifySpaceShow = true;        // 修改空间弹框打开
         },

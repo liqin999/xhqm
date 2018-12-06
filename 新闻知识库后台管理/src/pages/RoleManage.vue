@@ -10,9 +10,9 @@
             </create-new-role>
             <div class="role-table">
                 <el-table :data="roleData" style="width: 100%" v-loading="getRoleLoading">
-                    <el-table-column prop="roleName" label="角色名称" width="470"></el-table-column>
-                    <el-table-column prop="roleDesc" label="描述信息" width="260"></el-table-column>
-                    <el-table-column label="操作" width="200">
+                    <el-table-column prop="roleName" label="角色名称" ></el-table-column>
+                    <el-table-column prop="roleDesc" label="描述信息" ></el-table-column>
+                    <el-table-column label="操作" >
                         <template slot-scope="scope">
                             <modify-role :thisRole="scope.row" @modifyRoleSuccess="modifyRoleSuccess"></modify-role>
                             <delete-role :thisRole="scope.row" @deleteRoleSuccess="deleteRoleSuccess"></delete-role>
@@ -67,7 +67,7 @@ export default {
 
         // 获取全部角色 接口
         getAllRoleList(reqData) {
-            this.$api.getAllRoleList(reqData).then(res => {
+            this.$api.getAllRoleList().then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
                     console.log(res.data);
                     this.roleData = res.data;       // 表格赋值
@@ -81,8 +81,8 @@ export default {
 
 <style scoped>
     .role-manage {
-        float: left;
-        margin-left: 18px;
+        /* float: left; */
+        margin-left: 260px;
     }
     .menu-bar {
         position: relative;

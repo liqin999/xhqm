@@ -89,7 +89,10 @@ export default {
         },
         // 查询全部角色 接口
         getAllRoleList() {
-            this.$api.getAllRoleList().then(res => {
+            this.$api.getAllRoleList({
+                orgId:localStorage.getItem("xorgId"),
+                xflag:localStorage.getItem("xflag"),
+            }).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
                     console.log('全部角色',res.data);
                     this.userManageData.allRoles = res.data;

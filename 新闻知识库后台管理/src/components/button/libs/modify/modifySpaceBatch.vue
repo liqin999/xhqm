@@ -39,6 +39,13 @@ export default {
     methods: {
         // 批量编辑点击事件
         alterSpaceBatch(){
+            if (this.selectAnyData.length == 0){
+                this.$message({
+                    type: 'warning',
+                    message: '请至少选择一条数据'
+                });
+                return
+            }
             this.modifySpaceBatchParam.attachmentLimit = "";
             this.modifyBatchData.modifyBatchShow = true;    // 批量编辑弹框打开
         },
@@ -48,17 +55,23 @@ export default {
         },
         // 批量编辑弹框确认按钮 点击事件
         modifyBatchConfirm(){
-            if (this.selectAnyData.length != 0){
-                this.modifySpaceBatchParam.spaceType = this.listParam.spaceType;
-                this.modifySpaceBatchParam.ids = this.selectAnyData;
-                this.modifySpaceBatch(this.modifySpaceBatchParam);
-            } else {
-                this.$message({
-                    type: 'warning',
-                    message: '请至少选择一条数据'
-                });
-                this.modifyBatchData.modifyBatchShow = false;
-            }
+            // if (this.selectAnyData.length != 0){
+            //     this.modifySpaceBatchParam.spaceType = this.listParam.spaceType;
+            //     this.modifySpaceBatchParam.ids = this.selectAnyData;
+            //     this.modifySpaceBatch(this.modifySpaceBatchParam);
+            // } else {
+            //     this.$message({
+            //         type: 'warning',
+            //         message: '请至少选择一条数据'
+            //     });
+            //     this.modifyBatchData.modifyBatchShow = false;
+            // }
+
+             this.modifySpaceBatchParam.spaceType = this.listParam.spaceType;
+             this.modifySpaceBatchParam.ids = this.selectAnyData;
+             this.modifySpaceBatch(this.modifySpaceBatchParam);
+
+
         },
         modifySpaceBatch(reqData) {
             this.$api.modifySpaceBatch(reqData).then(res => {

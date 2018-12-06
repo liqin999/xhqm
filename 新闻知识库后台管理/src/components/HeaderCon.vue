@@ -20,6 +20,7 @@ export default {
 		background: #0682c8;
 		width: 100%;
 		height: 80px;
+		position: relative;
 	}
 	.headerCon img{
 		width: 50px;

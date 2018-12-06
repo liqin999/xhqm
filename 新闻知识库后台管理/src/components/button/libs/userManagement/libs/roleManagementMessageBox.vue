@@ -1,7 +1,7 @@
 <template>
     <div class="user-manager">
         <el-dialog title="角色管理" :visible.sync="propsData.userManageShow" width="30%">
-            <div class="white-list">
+            <!-- <div class="white-list">
                 <span>白名单</span>
 			    <el-switch 
                     v-model="propsData.changeActive" 
@@ -9,7 +9,7 @@
                     inactive-color="#ff4949" 
                     @change="changeSwitch">
                 </el-switch>
-            </div>
+            </div> -->
             <div class="role-manage">
                 <span>角色管理</span>
                 <div class="management" v-loading="propsData.getRolesLoading">

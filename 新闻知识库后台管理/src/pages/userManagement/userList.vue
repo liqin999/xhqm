@@ -10,15 +10,19 @@
                 <el-input v-model="value" suffix-icon="el-icon-search" placeholder="搜索用户" @keyup.enter.native="searchUser()"></el-input>
             </div>
             <div class="user-list clearfix">
-                <el-table :data="userData" style="width: 100%" v-loading="getUserLoading">
-                    <el-table-column prop="username" label="用户名" width="510"></el-table-column>
-                    <el-table-column prop="enabled" label="白名单" width="200">
+                <el-table :data="userData"  style="width: 100%" v-loading="getUserLoading">
+                    <el-table-column prop="userName" label="用户名"></el-table-column>
+                    <el-table-column prop="enabled" label="白名单" >
                         <template slot-scope="scope">
-                            <el-switch v-model="scope.row.enabled" active-color="#13ce66" inactive-color="#ff4949" disabled>
+                            <el-switch v-model="scope.row.enabled" 
+                            @change="switchEnabledFn(scope.row)"
+                            active-color="#13ce66" 
+                            inactive-color="#ff4949"
+                            >
                             </el-switch>
                         </template>
                     </el-table-column>
-                    <el-table-column label="角色" width="200">
+                    <el-table-column label="角色">
                         <template slot-scope="scope">
                             <role-manager :role="scope.row" @roleManagement="roleManagement" class="role-manager"></role-manager>
                         </template>
@@ -60,9 +64,11 @@ export default {
             menuLinkActive: 0,          // 菜单高亮
             getListData: {            // 获取用户列表接口请求参数
                 flag: 0,
-                pageSize: 20,
+                pageSize: 10,
                 PageNo: 1,
-                keywords: ''
+                keywords: '',
+                orgId:localStorage.getItem("xorgId"),
+                xflag:localStorage.getItem("xflag"),
             },
             getUserLoading: false,      // 表格加载loading
             userData: [],           // 列表展示用户信息
@@ -76,6 +82,32 @@ export default {
         this.getUserLists(this.getListData);        // 查询全部用户 接口调用
     },
     methods: {
+        //切换黑白名单
+        switchEnabledFn(row){
+            console.log(row.enabled)
+            //传递当前的值
+            //this.modifyuserParam.enabled = val; 
+            //this.modifyuserParam.userId 
+            //this.modifyuserParam.roles
+
+            let params= {
+                    enabled: row.enabled,
+                    roles: row.roles,
+                    userId:row.userId,
+            }
+
+             this.$api.modifyUser(params).then(res => {
+                this.$Fn.errorCode(res.result).then(() => {
+                      this.getUserLists(this.getListData);// 刷新列表
+                });
+            });
+
+          
+
+
+
+
+        },
         // 当前展示条数改变
         selectPageNumber(val){
             console.log('当前展示条数',val);
@@ -101,7 +133,7 @@ export default {
         getUserLists(reqData) {
             this.$api.getUserLists(reqData).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
-                    console.log('用户信息',res.data.dataList);
+                    //console.log('用户信息',res.data.dataList);
                     this.userData = res.data.dataList;  // 表格数据赋值
                     this.getUserLoading = false;        // 表格加载loading关闭
                     this.userTotalCount = res.data.totalRecord;
@@ -113,13 +145,17 @@ export default {
 </script>
 
 <style scoped>
+    .list-content{
+        overflow: hidden;
+        margin-left: 260px;
+    }
     .list-content .select{
         margin: 13px 20px 13px 0;
         display: block;
         float: right;
     }
     .list-content .user-list {
-        float: left;
+        /* float: left; */
         margin-left: 18px;
     }
     .list-content .user-list .el-table {

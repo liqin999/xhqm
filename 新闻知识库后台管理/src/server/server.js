@@ -15,7 +15,10 @@ export const getUserLists = data => {
 }
 //  获取角色列表信息
 export const getAllRoleList = data => {
-    return req.get("/basicservice/getAllRoleList");
+    return req.get("/basicservice/getAllRoleList/" + data.orgId+ "/" + data.xflag) ;
+}
+export const getAllRoleListOld = data => {
+    return req.get("/basicservice/getAllRoleList") ;
 }
 //  新增角色
 export const addRole = data => {
@@ -72,10 +75,23 @@ export const modifySpaceBatch = data => {
     return req.post("/kbaseservice/modifySpaceBatch", data);
 }
 
+//空间管理的总占用
+export const showTotalSpace = data => {
+    return req.post("/kbaseservice/showTotalSpace", data);
+}
+
+//权限管理
+export const authorityManager = data => {
+    return req.get("/basicservice/authorityManager/" + data.userId + "/" + data.orgId + "/" +data.flag);
+}
+//   /basicservice/authorityManager/{userId}/{orgId}/{flag}
+
+
 export default {
     userLogin,
     getUserLists,
     getAllRoleList,
+    getAllRoleListOld,
     addRole,
     delRole,
     getAllAuthorityList,
@@ -88,5 +104,7 @@ export default {
     modifyAuthority,
     getAuthorityByAuthorityId,
     modifySpace,
-    modifySpaceBatch
+    modifySpaceBatch,
+    showTotalSpace,
+    authorityManager
 }

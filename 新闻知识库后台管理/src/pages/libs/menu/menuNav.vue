@@ -13,6 +13,26 @@ export default {
     props: {
         menuLinkActive: Number
     },
+    mounted(){
+        
+    },
+    beforeMount(){
+        let xidentityId = localStorage.getItem("xidentityId");
+        if(xidentityId == "deptAdmin" || xidentityId == "groupAdmin"){
+             this.menuNav=[//部分和组室做限制
+                {
+                    iconName: 'el-icon-ump-yonghuguanli',
+                    linkName: '用户管理',
+                    linkPath: "/userList"
+                },
+                {
+                    iconName: 'el-icon-ump-tijikongjian-xianxing',
+                    linkName: '空间限制',
+                    linkPath: "/spaceLimit"
+                }
+            ]
+        }
+    },
     data () {
         return {
             // 菜单导航按钮
@@ -20,7 +40,7 @@ export default {
                 {
                     iconName: 'el-icon-ump-yonghuguanli',
                     linkName: '用户管理',
-                    linkPath: "/"
+                    linkPath: "/userList"
                 },
                 {
                     iconName: 'el-icon-ump-erji-jiaoseguanli',

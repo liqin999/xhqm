@@ -10,11 +10,11 @@
             </add-authority>
 			<div class="authority-table">
 				<el-table :data="authorityData" style="width: 100%" v-loading="getAuthorityLoading">
-					<el-table-column prop="authorityName" label="权限名称" width="450">
+					<el-table-column prop="authorityName" label="权限名称" >
 					</el-table-column>
-					<el-table-column prop="desc" label="描述信息" width="270">
+					<el-table-column prop="desc" label="描述信息" >
 					</el-table-column>
-					<el-table-column label="操作" width="200">
+					<el-table-column label="操作" >
 						<template slot-scope="scope">
                             <modify-authority :thisAuthority="scope.row" @modifyAuthoritySuccess="modifyAuthoritySuccess"></modify-authority>
 							<!-- <el-button type="text" size="small" @click="delauthority(scope.row.authorityId)">删除</el-button> -->
@@ -83,8 +83,8 @@ export default {
 
 <style scoped>
     .authority {
-        float: left;
-        margin-left: 18px;
+        /* float: left; */
+        margin-left: 260px;
     }
     .menu-bar {
         position: relative;

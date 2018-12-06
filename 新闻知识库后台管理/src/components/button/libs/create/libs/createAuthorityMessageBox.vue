@@ -8,9 +8,9 @@
                 <el-form-item label="权限描述" label-width="90px">
                     <el-input v-model="addAuthorityParame.desc" placeholder="描述内容" @keyup.enter.native='addAuthorityConfirm()'></el-input>
                 </el-form-item>
-                <el-form-item label="权限标识" label-width="90px">
+                <!-- <el-form-item label="权限标识" label-width="90px">
                     <el-input v-model="addAuthorityParame.authority" placeholder="标识内容" @keyup.enter.native='addAuthorityConfirm()'></el-input>
-                </el-form-item>
+                </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="propsData.addAuthorityShow = false">取 消</el-button>

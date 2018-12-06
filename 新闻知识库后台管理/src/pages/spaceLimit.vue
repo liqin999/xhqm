@@ -5,28 +5,40 @@
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
         </div>
         <div class="space-limit">
-            <modify-space-batch :selectAnyData="selectAnyData" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess" class="modify-space-batch">
+            <modify-space-batch 
+             :selectAnyData="selectAnyData" 
+            :listParam="listParam"
+             @spaceLimitSuccess="spaceLimitSuccess" 
+             class="modify-space-batch">
                 <span slot="iconName">批量编辑</span>
             </modify-space-batch>
+
+             <div class="select">
+                <el-input v-model="listParam.keywords"
+                 suffix-icon="el-icon-search" 
+                 placeholder="搜索用户" 
+                 @keyup.enter.native="searchUser(listParam.keywords)"></el-input>
+            </div>
+
             <div class="total-space">
-                <el-progress :percentage="70"></el-progress>
-                <span>总占用</span>
+                <el-progress :percentage="occupy" class="processBar" ></el-progress>
+                  <span>总占用</span>
             </div>
             <el-tabs v-model="activeName" @tab-click="spaceTabsClick" v-loading="getSpaceLoading">
                 <el-tab-pane label="个人" name="1">
                     <el-table ref="multipleTable" :data="personListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
                         <el-table-column type="selection" width="45">
                         </el-table-column>
-                        <el-table-column prop="object.username" label="名称" width="340">
+                        <el-table-column prop="object.userName" label="名称">
                         </el-table-column>
-                        <el-table-column prop="object.attachmentLimit" label="空间容量" width="120">
+                        <el-table-column prop="object.attachmentLimit" label="空间容量" >
                         </el-table-column>
-                        <el-table-column prop="scale" label="使用情况" width="200">
+                        <el-table-column prop="scale" label="使用情况" >
                             <template slot-scope="scope">
                                 <el-progress :percentage="scope.row.scale"></el-progress>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="yuJing" label="是否满报警" width="120">
+                        <el-table-column prop="yuJing" label="是否满报警">
                         </el-table-column>
                         <el-table-column label="操作" width="80">
                             <template slot-scope="scope">
@@ -40,18 +52,18 @@
                     <el-table ref="multipleTable" :data="roomListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
                         <el-table-column type="selection" width="55">
                         </el-table-column>
-                        <el-table-column prop="object.groupName" label="组室" width="120">
+                        <el-table-column prop="object.groupName" label="组室" >
                         </el-table-column>
-                        <el-table-column prop="object.attachmentLimit" label="空间容量" width="120">
+                        <el-table-column prop="object.attachmentLimit" label="空间容量" >
                         </el-table-column>
-                        <el-table-column prop="scale" label="使用情况" width="200">
+                        <el-table-column prop="scale" label="使用情况" >
                             <template slot-scope="scope">
                                 <el-progress :percentage="scope.row.scale"></el-progress>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="yuJing" label="是否满报警" width="120">
+                        <el-table-column prop="yuJing" label="是否满报警" >
                         </el-table-column>
-                        <el-table-column label="操作" width="300">
+                        <el-table-column label="操作" >
                             <template slot-scope="scope">
                                 <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
                                 <reset-space :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></reset-space>
@@ -63,18 +75,18 @@
                     <el-table ref="multipleTable" :data="partListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
                         <el-table-column type="selection" width="55">
                         </el-table-column>
-                        <el-table-column prop="object.deptname" label="部门" width="120">
+                        <el-table-column prop="object.deptname" label="部门" >
                         </el-table-column>
-                        <el-table-column prop="object.attachmentLimit" label="空间容量" width="120">
+                        <el-table-column prop="object.attachmentLimit" label="空间容量" >
                         </el-table-column>
-                        <el-table-column prop="scale" label="使用情况" width="200">
+                        <el-table-column prop="scale" label="使用情况" >
                             <template slot-scope="scope">
                                 <el-progress :percentage="scope.row.scale"></el-progress>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="yuJing" label="是否满报警" width="120">
+                        <el-table-column prop="yuJing" label="是否满报警" >
                         </el-table-column>
-                        <el-table-column label="操作" width="300">
+                        <el-table-column label="操作">
                             <template slot-scope="scope">
                                 <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
                                 <reset-space :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></reset-space>
@@ -117,6 +129,7 @@ export default {
     },
     data() {
         return {
+           
             menuLinkActive: 3,      // 菜单高亮
             partListData: [],        // 部门 表格数据
             roomListData: [],       // 组室 表格数据
@@ -125,23 +138,42 @@ export default {
             listParam: {            // 获取个人/组室/部门全部空间情况 请求参数
                 pageNo: 1,          // 当前页
                 pageTotal: 20,      // 当前展示页数
-                spaceType: ""       // 个人：1 组室：2 部门：3
+                spaceType: "",      // 个人：1 组室：2 部门：3
+                keywords:'',//模糊搜素
+                orgId:localStorage.getItem("xorgId"),
+                xflag:localStorage.getItem("xflag")
+
             },
             getSpaceLoading: false,     // 数据加载loading
             spaceCurrentPage: 1,         // 当前页
             spaceTotalCount: 0,          // 总条数
-            selectAnyData: []       // 列表中勾选的数据
+            selectAnyData: [],       // 列表中勾选的数据
+            occupy:1,//总占用
+
+
         };
     },
     mounted() {
         this.getSpaceLoading = true;        // 数据加载loading
         this.listParam.spaceType = 1;       // 默认刷新 个人管理页面
-        this.showSpaceManageList(this.listParam);        // 获取个人/组室/部门全部空间情况 接口调用
+         this.showSpaceManageList(this.listParam);        // 获取个人/组室/部门全部空间情况 接口调用
+         this.showTotalSpaceFn();        // 获取总占用量
     },
     methods: {
+        searchUser(){//关键词搜索 
+            console.log()
+            this.showSpaceManageList(this.listParam);
+        },
+        showTotalSpaceFn(){ // 获取总占用量
+             this.$api.showTotalSpace().then(res => {
+                    this.occupy = Number(res.totalUseSpace/res.conversion).toFixed(2)*100
+                 
+             })
+        },
         // tabs切换事件
         spaceTabsClick(tab) {
             console.log('当前tab',tab.name);
+            this.listParam.keywords = "";
             this.listParam.spaceType = tab.name;    // 获取个人/组室/部门全部空间情况参数 赋值
             this.showSpaceManageList(this.listParam);     // 获取个人/组室/部门全部空间情况 接口调用
         },
@@ -204,8 +236,9 @@ export default {
 
 <style scoped>
     .space-limit {
-        float: left;
-        margin-left: 18px;
+        /* float: left; */
+        margin-left: 260px;
+        position: relative;
     }
     .space-limit .modify-space-batch{
         padding: 15px 0 15px 20px;
@@ -230,14 +263,43 @@ export default {
         float: right;
         margin-right: 12px;
     }
+     .space-limit .total-space{
+         position: absolute;
+             position: absolute;
+                top: 18px;
+                right: 256px;
+     }
     .space-limit .total-space span {
         float: right;
-        margin-top: -34px;
+        margin-top: -30px;
         margin-right: 203px;
     }
     .space-limit .total-space .el-progress{
-        width: 20%;
+        /* width: 20%;
         float: right;
-        margin-top: -33px;
+        margin-top: -33px; */
+    }
+    
+     .select{
+        /* margin: 5px 20px 13px 0; */
+        margin-top: 10px;
+        display: block;
+        float: right;
+    }
+  
+</style>
+
+<style>
+    .space-limit .select .el-input__inner{
+        height: 30px;
+        line-height: 25px;
+        border-radius: 15px;
+        font-size:13px;
+    }
+    .space-limit .select .el-input{
+        width: 230px;
+    }
+    .space-limit .select .el-input__icon{
+        line-height: 25px;
     }
 </style>
