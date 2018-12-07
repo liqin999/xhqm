@@ -317,4 +317,12 @@ export default {
     }
 </style>
 
+<style lang="scss"> 
+.selectSearch{
+    .el-progress__text{
+        width: 48px;
+    }
+}
+</style>
+
 
