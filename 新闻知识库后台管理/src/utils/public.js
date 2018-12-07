@@ -165,12 +165,16 @@ export function setCookie(c_name, value, expiredays) {
     document.cookie = c_name + "=" + escape(value) + ";" + expires;
 };
 
-// export const setCookie = (name, value) => {
-//     var Days = 1;
-//     var exp = new Date();
-//     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-//     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + ";path=/";
-// }
+
+//删除cookie
+export function delCookie(name) {
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval = getCookie(name);
+    if (cval != null)
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+};
+
 
 // 字节换算
 export const byteConversion = (limit) => {
@@ -286,6 +290,7 @@ export default {
     Sessionstorage,
     getCookie,
     setCookie,
+    delCookie,
     byteConversion,
     suffixType,
     attachmentType,

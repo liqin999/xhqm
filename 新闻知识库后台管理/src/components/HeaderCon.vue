@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import {delCookie} from "@/utils/public"
 export default {
 	data(){
 		return{
@@ -29,6 +30,7 @@ export default {
 		    localStorage.removeItem("xidentityId");
 		    localStorage.removeItem("xorgId");
 			localStorage.removeItem("xflag");
+			delCookie("xidentityId");
 			this.$router.push({
 				path:'/login'
 			})
