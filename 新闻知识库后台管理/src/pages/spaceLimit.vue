@@ -13,7 +13,7 @@
                 <span slot="iconName">批量编辑</span>
             </modify-space-batch>
 
-             <div class="select">
+             <div class="selectSearch">
                 <el-input v-model="listParam.keywords"
                  suffix-icon="el-icon-search" 
                  placeholder="搜索用户" 
@@ -238,18 +238,22 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped  lang="scss">
     .space-limit {
         /* float: left; */
         /* margin-left: 260px; */
         position: relative;
     }
-    .space-limit .modify-space-batch{
-        padding: 15px 0 15px 20px;
+    .space-limit{
+         .modify-space-batch{
+           padding: 15px 0 15px 20px;
+         }
     }
-    .space-limit .el-tabs {
-        border: 1px solid #ebeef5;
-        padding: 0 20px 0 20px;
+    .space-limit{
+        .el-tabs {
+            border: 1px solid #ebeef5;
+            padding: 0 20px 0 20px;
+       }
     }
     /* .menu-bar {
         position: relative;
@@ -257,54 +261,60 @@ export default {
         width: 260px;
         background:#f2f7f9;
     } */
-    .space-limit .el-progress-bar {
-        margin-right: -70px;
+    .space-limit{
+        .el-progress-bar {
+          margin-right: -70px;
+       }
+    } 
+    .space-limit{
+         .el-progress__text {
+            margin-left: 19px;
+            width: 38px;
+         }
     }
-    .space-limit .el-progress__text {
-        margin-left: 19px;
-        width: 38px;
+    .space-limit{
+         .space-paging {
+            float: right;
+            margin-right: 12px;
+         }
     }
-    .space-limit .space-paging {
-        float: right;
-        margin-right: 12px;
-    }
-     .space-limit .total-space{
-         position: absolute;
-             position: absolute;
+     .space-limit{
+         .total-space{
+              position: absolute;
                 top: 18px;
                 right: 256px;
-     }
-    .space-limit .total-space span {
-        float: right;
-        margin-top: -30px;
-        margin-right: 203px;
+         }
+     } 
+    .space-limit{
+         .total-space span {
+            float: right;
+            margin-top: -30px;
+            margin-right: 203px;
+        }
     }
-    .space-limit .total-space .el-progress{
-        /* width: 20%;
-        float: right;
-        margin-top: -33px; */
-    }
-    
-     .select{
-        /* margin: 5px 20px 13px 0; */
+ 
+</style>
+<style  lang="scss">
+    .selectSearch{
         margin-top: 10px;
+        margin-right:20px;
         display: block;
         float: right;
+        .el-input{
+                width: 230px;
+        }
+        .el-input__icon{
+                line-height: 25px;
+        }
+        .el-input{
+            .el-input__inner{
+                height: 30px !important;
+                line-height: 25px!important;;
+                border-radius: 15px!important;;
+                font-size:13px!important;;
+            }
+        }
     }
-    .space-limit .select .el-input__inner{
-        height: 30px;
-        line-height: 25px;
-        border-radius: 15px;
-        font-size:13px;
-    }
-    .space-limit .select .el-input{
-        width: 230px;
-    }
-    .space-limit .select .el-input__icon{
-        line-height: 25px;
-    }
-    
-
-  
 </style>
+
 
