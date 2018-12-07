@@ -7,7 +7,12 @@
         <div class="list-content">
             <!-- 模糊搜索 -->
             <div class="select">
-                <el-input v-model="value" suffix-icon="el-icon-search" placeholder="搜索用户" @keyup.enter.native="searchUser()"></el-input>
+                <el-input v-model="value" 
+                suffix-icon="el-icon-search" 
+                placeholder="搜索用户" 
+                clearable
+                @keyup.enter.native="searchUser()">
+                </el-input>
             </div>
             <div class="user-list clearfix">
                 <el-table :data="userData"  style="width: 100%" v-loading="getUserLoading">

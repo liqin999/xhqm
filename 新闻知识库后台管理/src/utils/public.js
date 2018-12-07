@@ -156,12 +156,22 @@ export const getCookie = (name) => {
     var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
     if (arr != null) return unescape(arr[2]); return null;
 }
-export const setCookie = (name, value) => {
-    var Days = 1;
-    var exp = new Date();
-    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-    document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + ";path=/";
-}
+
+//设置cookie,增加到vue实例方便全局调用
+export function setCookie(c_name, value, expiredays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (expiredays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = c_name + "=" + escape(value) + ";" + expires;
+};
+
+// export const setCookie = (name, value) => {
+//     var Days = 1;
+//     var exp = new Date();
+//     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+//     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + ";path=/";
+// }
+
 // 字节换算
 export const byteConversion = (limit) => {
     let size = "";

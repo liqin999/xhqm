@@ -45,6 +45,7 @@
 <script>
 // import { isNotBlank } from "../../util/common.js";
 import HeaderCon from '@/components/HeaderCon.vue'
+import { setCookie } from "@/utils/public.js";
 export default {
     data() {
         return {
@@ -114,7 +115,7 @@ export default {
         doLogin(){//选择下拉进入系统
                 if(!this.roleForm.region){
                       this.$message({
-                        message: '请选择身份',
+                        message: '请选择部门或者组室',
                         type: 'warning'
                       });
                       return;
@@ -149,6 +150,8 @@ export default {
                                 },2000)
                                 return
                             }
+                           let expireDays = 0.5;//设置登录有效期
+                           setCookie("xidentityId", res.code, expireDays);
                            localStorage.setItem("xidentityId",res.code);
                            localStorage.setItem("xorgId",this.roleForm.region);
                            localStorage.setItem("xflag", this.flag);
