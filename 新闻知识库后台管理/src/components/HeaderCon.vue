@@ -5,7 +5,6 @@
 		<div class="slo"> 
 			新闻知识库后台管理系统
 		</div>
-
 	</div>
 </template>
 

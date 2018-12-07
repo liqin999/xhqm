@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 左侧菜单 -->
-        <div class="menu-bar">
+        <div >
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
         </div>
         <div class="role-manage">
@@ -66,8 +66,10 @@ export default {
         },
 
         // 获取全部角色 接口
-        getAllRoleList(reqData) {
-            this.$api.getAllRoleList().then(res => {
+        getAllRoleList() {
+            this.$api.getAllRoleList({
+              userId:-1  
+            }).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
                     console.log(res.data);
                     this.roleData = res.data;       // 表格赋值
@@ -84,12 +86,12 @@ export default {
         /* float: left; */
         margin-left: 260px;
     }
-    .menu-bar {
+    /* .menu-bar {
         position: relative;
         float: left;
         width: 260px;
         background:#f2f7f9;
-    }
+    } */
     .role-manage .create-new-role{
         padding: 15px 0 15px 20px;
     }

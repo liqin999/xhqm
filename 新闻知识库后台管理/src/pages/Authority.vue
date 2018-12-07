@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 左侧菜单 -->
-        <div class="menu-bar">
+        <div>
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
         </div>
         <div class="authority">
@@ -86,12 +86,7 @@ export default {
         /* float: left; */
         margin-left: 260px;
     }
-    .menu-bar {
-        position: relative;
-        float: left;
-        width: 260px;
-        background:#f2f7f9;
-    }
+  
     .authority .add-authority {
         padding: 15px 0 15px 20px;
     }

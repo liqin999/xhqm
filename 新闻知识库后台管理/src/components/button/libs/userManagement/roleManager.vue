@@ -88,10 +88,13 @@ export default {
             });
         },
         // 查询全部角色 接口
-        getAllRoleList() {
-            this.$api.getAllRoleList({
+        /**{
                 orgId:localStorage.getItem("xorgId"),
                 xflag:localStorage.getItem("xflag"),
+            } */
+        getAllRoleList() {
+            this.$api.getAllRoleList({
+                userId:localStorage.getItem("xuserId")
             }).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
                     console.log('全部角色',res.data);

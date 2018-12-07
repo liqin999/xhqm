@@ -63,20 +63,32 @@ export default {
 }
 </script>
 
-<style scoped>
-    .menu-bar .menu-link {
-        text-align: center;
-        padding: 10px 0;
-        cursor: pointer;
+<style scoped lang="scss">
+    .menu-bar {
+        position: relative;
+        float: left;
+        width: 260px;
+        background:#f2f7f9;
+        .menu-link{
+                 text-align: center;
+                 padding: 10px 0;
+                 cursor: pointer;
+        }
+   
     }
-    .menu-bar .menu-link.active {
-        background: #ffffff;
+    .menu-bar{
+        .menu-link.active {
+           background: #ffffff;
+        }
     }
-    .menu-bar .menu-link i {
-        font-size: 16px;
-        color: #4b4b4c;
-        margin-top: 15px;
-        margin-bottom: 15px;
-        display: block;
-    }
+    
+    .menu-bar{
+        .menu-link i {
+            font-size: 16px;
+            color: #4b4b4c;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            display: block;
+         }
+    } 
 </style>

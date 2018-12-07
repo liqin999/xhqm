@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 左侧菜单栏 -->
-        <div class="menu-bar">
+        <div>
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
         </div>
         <div class="list-content">
@@ -165,13 +165,13 @@ export default {
     .list-content .user-list .el-table .role-manager {
         cursor: pointer;
     }
-    .menu-bar {
+    /* .menu-bar {
         position: relative;
         float: left;
         width: 260px;
         background:#f2f7f9;
         border-right: 1px solid #ebeef5; 
-    }
+    } */
     .user-paging {
         float: right;
         margin-right: 12px;

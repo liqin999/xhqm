@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 左侧菜单 -->
-        <div class="menu-bar">
+        <div>
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
         </div>
         <div class="space-limit">
@@ -129,7 +129,6 @@ export default {
     },
     data() {
         return {
-           
             menuLinkActive: 3,      // 菜单高亮
             partListData: [],        // 部门 表格数据
             roomListData: [],       // 组室 表格数据
@@ -139,10 +138,8 @@ export default {
                 pageNo: 1,          // 当前页
                 pageTotal: 20,      // 当前展示页数
                 spaceType: "",      // 个人：1 组室：2 部门：3
+                userId:localStorage.getItem("xuserId"),
                 keywords:'',//模糊搜素
-                orgId:localStorage.getItem("xorgId"),
-                xflag:localStorage.getItem("xflag")
-
             },
             getSpaceLoading: false,     // 数据加载loading
             spaceCurrentPage: 1,         // 当前页
@@ -247,12 +244,12 @@ export default {
         border: 1px solid #ebeef5;
         padding: 0 20px 0 20px;
     }
-    .menu-bar {
+    /* .menu-bar {
         position: relative;
         float: left;
         width: 260px;
         background:#f2f7f9;
-    }
+    } */
     .space-limit .el-progress-bar {
         margin-right: -70px;
     }

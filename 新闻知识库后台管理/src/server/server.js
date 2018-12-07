@@ -15,10 +15,7 @@ export const getUserLists = data => {
 }
 //  获取角色列表信息
 export const getAllRoleList = data => {
-    return req.get("/basicservice/getAllRoleList/" + data.orgId+ "/" + data.xflag) ;
-}
-export const getAllRoleListOld = data => {
-    return req.get("/basicservice/getAllRoleList") ;
+    return req.get("/basicservice/getAllRoleList/" +data.userId) ;
 }
 //  新增角色
 export const addRole = data => {
@@ -91,7 +88,6 @@ export default {
     userLogin,
     getUserLists,
     getAllRoleList,
-    getAllRoleListOld,
     addRole,
     delRole,
     getAllAuthorityList,

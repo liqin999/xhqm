@@ -101,6 +101,7 @@ export default {
                     this.deptMap = res.data.deptMap;
                     this.groupMap = res.data.groupMap;
                     this.userId = res.data.userMap.userId;
+                    localStorage.setItem("xuserId",res.data.userMap.userId);
 
                 })
             })
@@ -331,10 +332,11 @@ export default {
         position: absolute;
         top: 50%;
         left: 50%;
-        margin: -150px 0 0 -150px;
+        /* margin: -150px 0 0 -150px; */
         width: 300px;
-        height: 300px;
+        /* height: 300px; */
         /* background-color: #333; */
+        transform: translate(-50%,-50%)
     }
     .login h1 {
         color: #3c5942;
