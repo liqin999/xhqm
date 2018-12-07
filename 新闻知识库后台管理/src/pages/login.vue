@@ -2,6 +2,7 @@
     <!-- 国际化
     <span @click="changeLang">{{ $t("message.title") }}</span> -->
     <div>
+       <HeaderCon></HeaderCon>
        <div class="login">
             <!-- <h1>Login</h1> -->
             <input type="text" v-model="userForm.userName" placeholder="用户名" required="required" />
@@ -43,6 +44,7 @@
 </template>
 <script>
 // import { isNotBlank } from "../../util/common.js";
+import HeaderCon from '@/components/HeaderCon.vue'
 export default {
     data() {
         return {
@@ -73,6 +75,9 @@ export default {
         };
     },
     computed: {
+    },
+    components: {
+        HeaderCon
     },
     methods: {
 
@@ -152,10 +157,6 @@ export default {
                             })
                        })
                    })
-
-
-
-
   
         },
 

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import App from '../App'
 import login from '@/pages/login'
 import container from '@/pages/container'
+const userList = r =>require.ensure([],() => r(require("@/pages/userManagement/userList")),"userList");
 import {routes} from "./routes.js"
 Vue.use(Router)
 let router = new Router({
@@ -26,6 +27,11 @@ let router = new Router({
 					path: '/login',
 					component: login
 				  },
+				  {
+					path: '*',
+					component: userList,
+					redirect:'userList'
+				}
 			]
 		},
 

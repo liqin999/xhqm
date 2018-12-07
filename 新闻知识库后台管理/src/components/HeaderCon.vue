@@ -5,11 +5,38 @@
 		<div class="slo"> 
 			新闻知识库后台管理系统
 		</div>
+		<div class="logout" v-if="isShowBtn" @click="loginOutFn">
+			<span>退出</span>
+		</div>
 	</div>
 </template>
 
 <script>
 export default {
+	data(){
+		return{
+			isShowBtn:false,
+		}
+	},
+	mounted(){
+		if(!!localStorage.getItem("xuserId")){
+			this.isShowBtn=true
+		}
+	},
+	methods:{
+		loginOutFn(){//清楚保存在本地的信息
+		    localStorage.removeItem("xuserId");
+		    localStorage.removeItem("xidentityId");
+		    localStorage.removeItem("xorgId");
+			localStorage.removeItem("xflag");
+			this.$router.push({
+				path:'/login'
+			})
+		}
+	},
+	watch:{
+
+	}
 
 }
 </script>
@@ -41,5 +68,13 @@ export default {
 		top: 45px;
 		left: 90px;
 		color: #ffffff;
+	}
+	.headerCon .logout{
+		position: absolute;
+		right: 30px;
+		top: 25px;
+		color: #fff;
+		font-size: 16px;
+		cursor: pointer;
 	}
 </style>
