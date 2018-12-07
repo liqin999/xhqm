@@ -1,23 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import App from '../App'
-
-import userList from '@/pages/userManagement/userList'
-import RoleManage from '@/pages/RoleManage'
-import Authority from '@/pages/Authority'
-import Organization from '@/pages/Organization'
-import spaceLimit from '@/pages/spaceLimit'
-
-
 import login from '@/pages/login'
 import container from '@/pages/container'
-
-import {
-	routes
-  } from "./routes.js"
-
+import {routes} from "./routes.js"
 Vue.use(Router)
-
 let router = new Router({
 	mode: 'history',
 	routes: [
@@ -41,62 +28,6 @@ let router = new Router({
 				  },
 			]
 		},
-
-
-		// {
-		// 	path: '/',
-		// 	name: 'login',
-		// 	component: login
-		// },
-		// {
-		// 	path: '/login',
-		// 	name: 'login',
-		// 	component: login
-		// },
-		// {
-		// 	path: '/userList',
-		// 	name: 'userList',
-		// 	component: userList,
-		// 	meta: {
-		// 		requireAuth: true,
-		// 	 },
-		// },
-		// {
-		// 	path: '/roleManage',
-		// 	name: 'RoleManage',
-		// 	component: RoleManage,
-		// 	meta: {
-		// 		requireAuth: true,
-		// 	 },
-		// },
-		// {
-		// 	path: '/authority',
-		// 	name: 'Authority',
-		// 	component: Authority,
-		// 	meta: {
-		// 		requireAuth: true,
-		// 	 },
-		// },
-		// {
-		// 	path: '/organization',
-		// 	name: 'Organization',
-		// 	component: Organization
-		// },
-
-		// {
-		// 	path: '/spaceLimit',
-		// 	name: 'spaceLimit',
-		// 	component: spaceLimit,
-		// 	meta: {
-		// 		requireAuth: true,
-		// 	 },
-		// },
-		// {
-        //     path: '*',
-        //     component: login,
-        //     redirect:'login'
-		// }
-		
 
 	]
 })
