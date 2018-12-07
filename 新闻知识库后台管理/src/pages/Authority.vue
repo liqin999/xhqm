@@ -1,9 +1,9 @@
 <template>
     <div>
         <!-- 左侧菜单 -->
-        <div>
+        <!-- <div>
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
-        </div>
+        </div> -->
         <div class="authority">
             <add-authority @createAuthoritySuccess="createAuthoritySuccess" class="add-authority">
                 <span slot="iconName">新增权限</span>
@@ -29,7 +29,7 @@
 
 <script>
 // libs
-import menuNav from "@/pages/libs/menu/menuNav"
+// import menuNav from "@/pages/libs/menu/menuNav"
 
 // button
 import addAuthority from "@/components/button/libs/create/addAuthority"
@@ -38,7 +38,7 @@ import deleteAuthority from "@/components/button/libs/delete/deleteAuthority"
 
 export default {
     components: {
-        menuNav,
+        // menuNav,
         addAuthority,
         modifyAuthority,
         deleteAuthority
@@ -84,7 +84,7 @@ export default {
 <style scoped>
     .authority {
         /* float: left; */
-        margin-left: 260px;
+        /* margin-left: 260px; */
     }
   
     .authority .add-authority {

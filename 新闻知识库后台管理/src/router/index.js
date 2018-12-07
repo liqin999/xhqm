@@ -7,65 +7,97 @@ import RoleManage from '@/pages/RoleManage'
 import Authority from '@/pages/Authority'
 import Organization from '@/pages/Organization'
 import spaceLimit from '@/pages/spaceLimit'
+
+
 import login from '@/pages/login'
+import container from '@/pages/container'
+
+import {
+	routes
+  } from "./routes.js"
+
 Vue.use(Router)
 
 let router = new Router({
 	mode: 'history',
 	routes: [
 		{
-			path: '/',
-			name: 'login',
-			component: login
+			path: '',
+			component: App, //顶层路由，对应index.html
+			children: [
+				 {
+					path: '/container',
+					component: container,
+					meta: {
+					   requireAuth: true,
+					},
+					children: [
+					    ...routes
+					]
+				  }, 
+				  {
+					path: '/login',
+					component: login
+				  },
+			]
 		},
-		{
-			path: '/login',
-			name: 'login',
-			component: login
-		},
-		{
-			path: '/userList',
-			name: 'userList',
-			component: userList,
-			meta: {
-				requireAuth: true,
-			 },
-		},
-		{
-			path: '/roleManage',
-			name: 'RoleManage',
-			component: RoleManage,
-			meta: {
-				requireAuth: true,
-			 },
-		},
-		{
-			path: '/authority',
-			name: 'Authority',
-			component: Authority,
-			meta: {
-				requireAuth: true,
-			 },
-		},
+
+
+		// {
+		// 	path: '/',
+		// 	name: 'login',
+		// 	component: login
+		// },
+		// {
+		// 	path: '/login',
+		// 	name: 'login',
+		// 	component: login
+		// },
+		// {
+		// 	path: '/userList',
+		// 	name: 'userList',
+		// 	component: userList,
+		// 	meta: {
+		// 		requireAuth: true,
+		// 	 },
+		// },
+		// {
+		// 	path: '/roleManage',
+		// 	name: 'RoleManage',
+		// 	component: RoleManage,
+		// 	meta: {
+		// 		requireAuth: true,
+		// 	 },
+		// },
+		// {
+		// 	path: '/authority',
+		// 	name: 'Authority',
+		// 	component: Authority,
+		// 	meta: {
+		// 		requireAuth: true,
+		// 	 },
+		// },
 		// {
 		// 	path: '/organization',
 		// 	name: 'Organization',
 		// 	component: Organization
 		// },
 
-		{
-			path: '/spaceLimit',
-			name: 'spaceLimit',
-			component: spaceLimit,
-			meta: {
-				requireAuth: true,
-			 },
-		},
-		{
-            path: '*',
-            component: login,
-            redirect:'login'
-        }
+		// {
+		// 	path: '/spaceLimit',
+		// 	name: 'spaceLimit',
+		// 	component: spaceLimit,
+		// 	meta: {
+		// 		requireAuth: true,
+		// 	 },
+		// },
+		// {
+        //     path: '*',
+        //     component: login,
+        //     redirect:'login'
+		// }
+		
+
 	]
 })
 

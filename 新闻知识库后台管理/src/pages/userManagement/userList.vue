@@ -1,9 +1,9 @@
 <template>
     <div>
         <!-- 左侧菜单栏 -->
-        <div>
+        <!-- <div>
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
-        </div>
+        </div> -->
         <div class="list-content">
             <!-- 模糊搜索 -->
             <div class="select">
@@ -47,7 +47,7 @@
 
 <script>
 // libs
-import menuNav from "@/pages/libs/menu/menuNav"
+// import menuNav from "@/pages/libs/menu/menuNav"
 // button
 import roleManager from "@/components/button/libs/userManagement/roleManager"
 // mixins
@@ -57,7 +57,7 @@ export default {
     mixins: [userMixins],
     components: {
         roleManager,
-        menuNav
+        // menuNav
     },
     data() {
         return {
@@ -147,7 +147,7 @@ export default {
 <style scoped>
     .list-content{
         overflow: hidden;
-        margin-left: 260px;
+        /* margin-left: 260px; */
     }
     .list-content .select{
         margin: 13px 20px 13px 0;
@@ -156,7 +156,7 @@ export default {
     }
     .list-content .user-list {
         /* float: left; */
-        margin-left: 18px;
+        /* margin-left: 18px; */
     }
     .list-content .user-list .el-table {
         border: 1px solid #ebeef5;

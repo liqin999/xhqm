@@ -1,9 +1,9 @@
 <template>
     <div>
         <!-- 左侧菜单 -->
-        <div >
+        <!-- <div >
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
-        </div>
+        </div> -->
         <div class="role-manage">
             <create-new-role @createRoleSuccess="createRoleSuccess" class="create-new-role">
                 <span slot="iconName">新增角色</span>
@@ -26,7 +26,7 @@
 
 <script>
 // libs
-import menuNav from "@/pages/libs/menu/menuNav"
+// import menuNav from "@/pages/libs/menu/menuNav"
 
 // button
 import createNewRole from "@/components/button/libs/create/createNewRole"
@@ -35,7 +35,7 @@ import deleteRole from "@/components/button/libs/delete/deleteRole"
 
 export default {
     components: {
-        menuNav,
+        // menuNav,
         createNewRole,
         modifyRole,
         deleteRole
@@ -84,7 +84,7 @@ export default {
 <style scoped>
     .role-manage {
         /* float: left; */
-        margin-left: 260px;
+        /* margin-left: 260px; */
     }
     /* .menu-bar {
         position: relative;

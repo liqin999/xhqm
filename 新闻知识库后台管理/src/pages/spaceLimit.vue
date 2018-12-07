@@ -1,9 +1,9 @@
 <template>
     <div>
         <!-- 左侧菜单 -->
-        <div>
+        <!-- <div>
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
-        </div>
+        </div> -->
         <div class="space-limit">
             <modify-space-batch 
              :selectAnyData="selectAnyData" 
@@ -113,7 +113,7 @@
 
 <script>
 // libs
-import menuNav from "@/pages/libs/menu/menuNav"
+// import menuNav from "@/pages/libs/menu/menuNav"
 
 // button
 import modifySpaceLimit from "@/components/button/libs/modify/modifySpaceLimit"
@@ -122,7 +122,7 @@ import modifySpaceBatch from "@/components/button/libs/modify/modifySpaceBatch"
 
 export default {
     components: {
-        menuNav,
+        // menuNav,
         modifySpaceLimit,
         resetSpace,
         modifySpaceBatch
@@ -234,7 +234,7 @@ export default {
 <style scoped>
     .space-limit {
         /* float: left; */
-        margin-left: 260px;
+        /* margin-left: 260px; */
         position: relative;
     }
     .space-limit .modify-space-batch{

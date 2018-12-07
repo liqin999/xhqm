@@ -1,25 +1,17 @@
 <template>
 	<div id="app">
-		<HeaderCon></HeaderCon>
 		<router-view></router-view>
 	</div>
 </template>
 <script>
-    import HeaderCon from './components/HeaderCon.vue'
     export default {
         data (){
             return {
             }
         },
-        components: {
-            HeaderCon
-        },
-        mounted(){
-
-        },
-        methods: {
-
-        }
+        components: {},
+        mounted(){},
+        methods: {}
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
     <div class="menu-bar">
         <template v-for="(link,index) in menuNav">
-            <router-link :to="link.linkPath" tag="div" class="menu-link" :class="{active:menuLinkActive == index}">
+            <router-link :to="link.linkPath" tag="div" class="menu-link" :key="index">
                 <i :class="link.iconName">{{ link.linkName }}</i>
             </router-link>
         </template>
@@ -67,20 +67,24 @@ export default {
     .menu-bar {
         position: relative;
         float: left;
-        width: 260px;
+        width: 220px;
         background:#f2f7f9;
         .menu-link{
                  text-align: center;
                  padding: 10px 0;
                  cursor: pointer;
         }
+        .router-link-active{
+            background: #ffffff;
+        }
    
     }
-    .menu-bar{
-        .menu-link.active {
-           background: #ffffff;
-        }
-    }
+    
+    // .menu-bar{
+    //     .menu-link.active {
+    //        background: #ffffff;
+    //     }
+    // }
     
     .menu-bar{
         .menu-link i {
