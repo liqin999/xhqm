@@ -20,12 +20,12 @@
                  @keyup.enter.native="searchUser(listParam.keywords)"></el-input>
             </div>
 
-            <div class="total-space">
+            <div class="total-space" v-if="occupy">
                 <el-progress :percentage="occupy" class="processBar" ></el-progress>
                   <span>总占用</span>
             </div>
             <el-tabs v-model="activeName" @tab-click="spaceTabsClick" v-loading="getSpaceLoading">
-                <el-tab-pane label="个人" name="1">
+                <el-tab-pane label="个人" name="1" v-if="personTab">
                     <el-table ref="multipleTable" :data="personListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
                         <el-table-column type="selection" width="45">
                         </el-table-column>
@@ -34,7 +34,7 @@
                         <el-table-column prop="object.attachmentLimit" label="空间容量" >
                         </el-table-column>
                         <el-table-column prop="scale" label="使用情况" >
-                            <template slot-scope="scope">
+                            <template slot-scope="scope" class="showProcess">
                                 <el-progress :percentage="scope.row.scale"></el-progress>
                             </template>
                         </el-table-column>
@@ -48,7 +48,7 @@
                         </el-table-column>
                     </el-table>
                 </el-tab-pane>
-                <el-tab-pane label="组室" name="2">
+                <el-tab-pane label="组室" name="2" v-if="groupTab">
                     <el-table ref="multipleTable" :data="roomListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
                         <el-table-column type="selection" width="55">
                         </el-table-column>
@@ -71,7 +71,7 @@
                         </el-table-column>
                     </el-table>
                 </el-tab-pane>
-                <el-tab-pane label="部门" name="3">
+                <el-tab-pane label="部门" name="3" v-if="departTab">
                     <el-table ref="multipleTable" :data="partListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
                         <el-table-column type="selection" width="55">
                         </el-table-column>
@@ -127,8 +127,13 @@ export default {
         resetSpace,
         modifySpaceBatch
     },
+    beforeMount(){ },
     data() {
         return {
+          
+            personTab:true,//个人 根据登录时候不同用户身份，显示个人，组室，部门的页签
+            groupTab:true,//组室
+            departTab:true,//部门
             menuLinkActive: 3,      // 菜单高亮
             partListData: [],        // 部门 表格数据
             roomListData: [],       // 组室 表格数据
@@ -140,36 +145,38 @@ export default {
                 spaceType: "",      // 个人：1 组室：2 部门：3
                 userId:localStorage.getItem("xuserId"),
                 keywords:'',//模糊搜素
+                orgId:localStorage.getItem("xorgId")
             },
             getSpaceLoading: false,     // 数据加载loading
             spaceCurrentPage: 1,         // 当前页
             spaceTotalCount: 0,          // 总条数
             selectAnyData: [],       // 列表中勾选的数据
-            occupy:1,//总占用
+            occupy:0,//总占用
 
 
         };
     },
-    mounted() {
-        this.getSpaceLoading = true;        // 数据加载loading
-        this.listParam.spaceType = 1;       // 默认刷新 个人管理页面
-         this.showSpaceManageList(this.listParam);        // 获取个人/组室/部门全部空间情况 接口调用
+    created(){
+         this.getSpaceLoading = true;        // 数据加载loading
+         this.listParam.spaceType = 1;       // 默认刷新 个人管理页面
+         this.showSpaceManageList(this.listParam);   // 获取个人/组室/部门全部空间情况 接口调用
          this.showTotalSpaceFn();        // 获取总占用量
     },
+    mounted() {
+    },
+
     methods: {
         searchUser(){//关键词搜索 
-            console.log()
             this.showSpaceManageList(this.listParam);
         },
         showTotalSpaceFn(){ // 获取总占用量
              this.$api.showTotalSpace().then(res => {
-                    this.occupy = Number(res.totalUseSpace/res.conversion).toFixed(2)*100
+                    this.occupy =res.totalUseSpace && Number((res.totalUseSpace/res.conversion)*100).toFixed(2) || 0
                  
              })
         },
         // tabs切换事件
         spaceTabsClick(tab) {
-            console.log('当前tab',tab.name);
             this.listParam.keywords = "";
             this.listParam.spaceType = tab.name;    // 获取个人/组室/部门全部空间情况参数 赋值
             this.showSpaceManageList(this.listParam);     // 获取个人/组室/部门全部空间情况 接口调用
@@ -208,7 +215,7 @@ export default {
         showSpaceManageList(reqData) {
             this.$api.showSpaceManageList(reqData).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
-                    res.data.dataList.forEach(item => {
+                    res.data.dataList && res.data.dataList.forEach(item => {
                         if (item.scale < 0) {
                             item.scale = 0;
                         } else {
@@ -255,6 +262,7 @@ export default {
     }
     .space-limit .el-progress__text {
         margin-left: 19px;
+        width: 38px;
     }
     .space-limit .space-paging {
         float: right;
@@ -283,10 +291,6 @@ export default {
         display: block;
         float: right;
     }
-  
-</style>
-
-<style>
     .space-limit .select .el-input__inner{
         height: 30px;
         line-height: 25px;
@@ -299,4 +303,8 @@ export default {
     .space-limit .select .el-input__icon{
         line-height: 25px;
     }
+    
+
+  
 </style>
+

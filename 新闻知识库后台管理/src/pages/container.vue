@@ -1,5 +1,5 @@
 <template>
-    <div style="height:100%">
+    <div>
        <HeaderCon></HeaderCon>
        <div id="container-wrap" class="container-wrap" ref="containerWrap">
         <!-- 侧边栏 -->

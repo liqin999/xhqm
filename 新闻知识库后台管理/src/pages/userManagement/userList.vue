@@ -10,7 +10,6 @@
                 <el-input v-model="value" 
                 suffix-icon="el-icon-search" 
                 placeholder="搜索用户" 
-                clearable
                 @keyup.enter.native="searchUser()">
                 </el-input>
             </div>
