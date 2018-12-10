@@ -39,6 +39,7 @@ export default {
 		    localStorage.removeItem("xidentityId");
 		    localStorage.removeItem("xorgId");
 			localStorage.removeItem("xflag");
+			localStorage.removeItem("xloginName");
 			delCookie("xidentityId");
 			this.$router.push({
 				path:'/login'
