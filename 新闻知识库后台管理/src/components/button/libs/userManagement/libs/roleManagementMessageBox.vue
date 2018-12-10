@@ -11,7 +11,7 @@
                 </el-switch>
             </div> -->
             <div class="role-manage">
-                <span>角色管理</span>
+                <!-- <span>角色管理</span> -->
                 <div class="management" v-loading="propsData.getRolesLoading">
                     <el-checkbox-group v-model="propsData.checkedrole" @change="checkedRoleChange">
                         <el-checkbox v-for="item in propsData.allRoles" :label="item.roleId" :key="item.roleId">{{item.roleName}}</el-checkbox>
