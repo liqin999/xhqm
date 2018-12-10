@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import {delCookie} from "@/utils/public"
+import {delCookie,getCookie} from "@/utils/public"
 export default {
 	data(){
 		return{
@@ -20,7 +20,7 @@ export default {
 		}
 	},
 	mounted(){
-		if(!!localStorage.getItem("xuserId")){
+		if(!!getCookie("xidentityId")){
 			this.isShowBtn=true
 		}
 	},
