@@ -5,8 +5,16 @@
 		<div class="slo"> 
 			新闻知识库后台管理系统
 		</div>
-		<div class="logout" v-if="isShowBtn" @click="loginOutFn">
-			<span>退出</span>
+		<div class="logout" v-if="isShowBtn" >
+			<el-dropdown>
+				<span class="el-dropdown-link" style="color:#fff">
+					{{loginName}}
+					<i class="el-icon-arrow-down el-icon--right"></i>
+				</span>
+				  <el-dropdown-menu slot="dropdown">
+    					<el-dropdown-item @click.native="loginOutFn">退出</el-dropdown-item>
+				  </el-dropdown-menu>
+			</el-dropdown>
 		</div>
 	</div>
 </template>
@@ -17,6 +25,7 @@ export default {
 	data(){
 		return{
 			isShowBtn:false,
+			loginName:localStorage.getItem("xloginName")
 		}
 	},
 	mounted(){

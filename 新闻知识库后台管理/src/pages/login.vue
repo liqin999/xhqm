@@ -108,6 +108,7 @@ export default {
                     this.groupMap = res.data.groupMap;
                     this.userId = res.data.userMap.userId;
                     localStorage.setItem("xuserId",res.data.userMap.userId);
+                    localStorage.setItem("xloginName",res.data.userMap.loginName);
 
                 })
             })
