@@ -145,9 +145,9 @@ export default {
                                     message: "你没有权限",
                                     type: "error"
                                 });
-                                setTimeout(()=>{
-                                    this.dialogFormVisible = false;
-                                },2000)
+                                // setTimeout(()=>{
+                                //     this.dialogFormVisible = false;
+                                // },2000)
                                 return
                             }
                            let expireDays = 0.5;//设置登录有效期

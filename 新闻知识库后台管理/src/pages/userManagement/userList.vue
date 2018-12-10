@@ -88,28 +88,22 @@ export default {
     methods: {
         //切换黑白名单
         switchEnabledFn(row){
-            console.log(row.enabled)
-            //传递当前的值
-            //this.modifyuserParam.enabled = val; 
-            //this.modifyuserParam.userId 
-            //this.modifyuserParam.roles
-
             let params= {
                     enabled: row.enabled,
                     roles: row.roles,
                     userId:row.userId,
             }
-
              this.$api.modifyUser(params).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
+                       if(res.result.code == "0000"){
+                             this.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            });
+                       }
                       this.getUserLists(this.getListData);// 刷新列表
                 });
             });
-
-          
-
-
-
 
         },
         // 当前展示条数改变

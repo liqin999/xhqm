@@ -83,6 +83,12 @@ export default {
         modifyUser(reqData) {
             this.$api.modifyUser(reqData).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
+                   if(res.result.code == "0000"){
+                             this.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            });
+                    }
                     this.$emit('roleManagement')
                 });
             });
