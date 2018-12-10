@@ -71,7 +71,7 @@ export default {
               userId:-1  
             }).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
-                    console.log(res.data);
+                   // console.log(res.data);
                     this.roleData = res.data;       // 表格赋值
                     this.getRoleLoading = false;    // 表格加载loading关闭
                 });

@@ -218,6 +218,8 @@ export default {
                     res.data.dataList && res.data.dataList.forEach(item => {
                         if (item.scale < 0) {
                             item.scale = 0;
+                        } if(item.scale == 'Infinity'){
+                             item.scale = 100;
                         } else {
                             item.scale = Number((item.scale * 100).toFixed(2));     // 使用情况 赋值
                         }
