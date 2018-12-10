@@ -16,7 +16,7 @@
              <div class="selectSearch">
                 <el-input v-model="listParam.keywords"
                  suffix-icon="el-icon-search" 
-                 placeholder="搜索用户" 
+                 :placeholder="placeholdertip" 
                  @keyup.enter.native="searchUser(listParam.keywords)"></el-input>
             </div>
 
@@ -33,9 +33,9 @@
                         </el-table-column>
                         <el-table-column prop="object.attachmentLimit" label="空间容量" >
                         </el-table-column>
-                        <el-table-column prop="scale" label="使用情况" >
-                            <template slot-scope="scope" class="showProcess">
-                                <el-progress :percentage="scope.row.scale"></el-progress>
+                        <el-table-column prop="scale" label="使用情况">
+                            <template slot-scope="scope" >
+                                <el-progress :percentage="scope.row.scale" ></el-progress>
                             </template>
                         </el-table-column>
                         <el-table-column prop="yuJing" label="是否满报警">
@@ -58,7 +58,7 @@
                         </el-table-column>
                         <el-table-column prop="scale" label="使用情况" >
                             <template slot-scope="scope">
-                                <el-progress :percentage="scope.row.scale"></el-progress>
+                                <el-progress :percentage="scope.row.scale" ></el-progress>
                             </template>
                         </el-table-column>
                         <el-table-column prop="yuJing" label="是否满报警" >
@@ -81,7 +81,7 @@
                         </el-table-column>
                         <el-table-column prop="scale" label="使用情况" >
                             <template slot-scope="scope">
-                                <el-progress :percentage="scope.row.scale"></el-progress>
+                                <el-progress :percentage="scope.row.scale" ></el-progress>
                             </template>
                         </el-table-column>
                         <el-table-column prop="yuJing" label="是否满报警" >
@@ -130,7 +130,7 @@ export default {
     beforeMount(){ },
     data() {
         return {
-          
+            placeholdertip:'个人名称',
             personTab:true,//个人 根据登录时候不同用户身份，显示个人，组室，部门的页签
             groupTab:true,//组室
             departTab:true,//部门
@@ -141,7 +141,7 @@ export default {
             activeName: "1",        // 默认展示tab
             listParam: {            // 获取个人/组室/部门全部空间情况 请求参数
                 pageNo: 1,          // 当前页
-                pageTotal: 20,      // 当前展示页数
+                pageTotal: 10,      // 当前展示页数
                 spaceType: "",      // 个人：1 组室：2 部门：3
                 userId:localStorage.getItem("xuserId"),
                 keywords:'',//模糊搜素
@@ -179,11 +179,12 @@ export default {
         spaceTabsClick(tab) {
             this.listParam.keywords = "";
             this.listParam.spaceType = tab.name;    // 获取个人/组室/部门全部空间情况参数 赋值
+            let placeholderTipAry=["","个人名称","组室名称","部门名称"]
+            this.placeholdertip = placeholderTipAry[tab.name];
             this.showSpaceManageList(this.listParam);     // 获取个人/组室/部门全部空间情况 接口调用
         },
         // 多选数据 选中事件
         chooseAnyEdit(val) {
-            console.log('选中的数据',val);
             this.selectAnyData = [];
             if (this.listParam.spaceType == 1) {
                 val.forEach(item => {
@@ -201,7 +202,6 @@ export default {
         },
         // 当前展示条数改变
         selectPageNumber(val){
-            console.log('当前展示条数',val);
             this.listParam.pageTotal = val;
             this.showSpaceManageList(this.listParam);        // 刷新列表
         },
@@ -322,7 +322,9 @@ export default {
     .el-progress__text{
         width: 48px;
     }
+   
 }
+
 </style>
 
 

@@ -39,12 +39,11 @@ export default {
 
 .container-wrap {
   overflow: hidden;
-  // background-color: #fbfbfb;
   height: calc(100% - 80px);
 }
 .main-container {
   margin-left: 220px;
-  background-color: #fbfbfb;
+  //background-color: #fbfbfb;
   min-height: 100%;
   overflow-y: hidden;
   .content {

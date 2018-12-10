@@ -1,5 +1,5 @@
 <template>
-    <div class="menu-bar">
+    <div class="menu-bar" ref="menuBar">
         <template v-for="(link,index) in menuNav">
             <router-link :to="link.linkPath" tag="div" class="menu-link" :key="index">
                 <i :class="link.iconName">{{ link.linkName }}</i>
@@ -14,7 +14,18 @@ export default {
         menuLinkActive: Number
     },
     mounted(){
-        
+        const that = this;
+        let winH = document.documentElement.clientHeight;
+        that.$refs.menuBar.style.height = winH-80+"px";
+        window.onresize = () => {
+            return (() => {
+                let winH = document.documentElement.clientHeight;
+                 setTimeout(function() {
+                      that.$refs.menuBar.style.height = winH-80+"px";
+                 },300)
+            })()
+        }
+
     },
     beforeMount(){
         let xidentityId = localStorage.getItem("xidentityId");
@@ -69,13 +80,18 @@ export default {
         float: left;
         width: 220px;
         background:#f2f7f9;
+        border-right:1px solid #ebeef5;
         .menu-link{
                  text-align: center;
                  padding: 10px 0;
                  cursor: pointer;
         }
-        .router-link-active{
+        .menu-link.router-link-active{
             background: #ffffff;
+            i{
+                color: #0682c8;
+            }
+          
         }
    
     }
