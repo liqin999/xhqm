@@ -18,7 +18,7 @@
 <style>
     @import url("assets/icon/iconfont.css");
     html, body{
-		height: 100%;
+		/* height: 100%; */
 	}
     /*css reset*/
     html,body, h1, h2, h3, h4, h5, h6, hr, p, dl, dt, dd, ul, ol, th, td, pre, blockquote, fieldset, lengend, input, button, textarea, form{margin: 0; padding: 0;}

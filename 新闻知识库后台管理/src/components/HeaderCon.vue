@@ -12,7 +12,7 @@
 					<i class="el-icon-arrow-down el-icon--right"></i>
 				</span>
 				  <el-dropdown-menu slot="dropdown">
-    					<el-dropdown-item @click.native="loginOutFn">退出</el-dropdown-item>
+    					<el-dropdown-item @click.native="loginOutFn">退出登录</el-dropdown-item>
 				  </el-dropdown-menu>
 			</el-dropdown>
 		</div>
@@ -29,7 +29,7 @@ export default {
 		}
 	},
 	mounted(){
-		if(!!getCookie("xidentityId")){
+		if(!!getCookie("xuserId")){
 			this.isShowBtn=true
 		}
 	},

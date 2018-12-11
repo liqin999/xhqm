@@ -11,7 +11,7 @@
         </div>
         <div>
             <!-- 弹框的内容start -->
-             <el-dialog title="" 
+             <!-- <el-dialog title="" 
               :visible.sync="dialogFormVisible"
               custom-class="dialogClass"
               width="400px">
@@ -36,7 +36,7 @@
                     <el-button type="primary" @click="doLogin()">确 定</el-button>
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
                 </div>
-                </el-dialog>
+                </el-dialog> -->
             <!-- 弹框的内容end -->
         </div>
     </div>
@@ -54,24 +54,15 @@ export default {
                 userName: "",
                 password: ""
             },
-            dialogFormVisible:false,//权限弹框
+            
             roleForm:{
                 region:'',
             },
-            regionOpt: [
-                   {
-                    label: '部门',
-                    options: []
-                    },
-                   {
-                    label: '组室',
-                    options: []
-                    }
-               ],
+          
               userId:'',//用户id 
               flag:null,//判读是部门或者组室
-              deptMap:[],//部门下拉
-              groupMap:[],//组织下拉
+             
+            
             
         };
     },
@@ -81,7 +72,6 @@ export default {
         HeaderCon
     },
     methods: {
-
         login(){
             if (this.userForm.userName.length == 0 || this.userForm.password.length == 0){
                 this.$message({
@@ -99,74 +89,30 @@ export default {
         userLogin(reqData){
             this.$api.userLogin(reqData).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
-                    this.dialogFormVisible = true;
-                    let deptMap = res.data.deptMap;
-                    let groupMap = res.data.groupMap;
-                    this.regionOpt[0].options = res.data.deptMap;
-                    this.regionOpt[1].options = res.data.groupMap;
-                    this.deptMap = res.data.deptMap;
-                    this.groupMap = res.data.groupMap;
-                    this.userId = res.data.userMap.userId;
-                    localStorage.setItem("xuserId",res.data.userMap.userId);
-                    localStorage.setItem("xloginName",res.data.userMap.loginName);
+                   // this.dialogFormVisible = true;
+                   
+                     this.userId = res.userMap.userId;
+
+                     let expireDays = 0.5;//设置登录有效期
+                     setCookie("xidentityId", res.authority, expireDays);
+                     localStorage.setItem("xidentityId",res.authority);
+
+                     if(res.authority == "superAdmin"){
+                         this.flag = -1
+                     }else if(res.authority == "deptAdmin" || res.authority == "groupAdmin"){
+                          this.flag = 1
+                     }
+                    localStorage.setItem("xflag", this.flag);
+                    localStorage.setItem("xuserId",res.userMap.userId);
+                    localStorage.setItem("xloginName",res.userMap.loginName);               
+                    this.$router.push({
+                          path:'/userList'
+                    })
 
                 })
             })
         },
-        doLogin(){//选择下拉进入系统
-                if(!this.roleForm.region){
-                      this.$message({
-                        message: '请选择部门或者组室',
-                        type: 'warning'
-                      });
-                      return;
-                }
-
-
-                this.deptMap.forEach((item)=>{//部门
-                        if(item.orgId == this.roleForm.region){
-                            this.flag = 1
-                        }
-                })
-                this.groupMap.forEach((item)=>{//组织
-                   if(item.orgId == this.roleForm.region){
-                         this.flag = 2
-                    }
-                })
-                let reqData ={
-                    userId:this.userId,
-                    orgId:this.roleForm.region,
-                    flag:this.flag,
-                }
-                 this.$api.authorityManager(reqData).then(res => {
-                       this.$Fn.errorCode(res.result).then(() => {
-                           if(res.code == "user"){
-                                this.$message({
-                                    showClose: true,
-                                    message: "你没有权限",
-                                    type: "error"
-                                });
-                                // setTimeout(()=>{
-                                //     this.dialogFormVisible = false;
-                                // },2000)
-                                return
-                            }
-                           let expireDays = 0.5;//设置登录有效期
-                           setCookie("xidentityId", res.code, expireDays);
-                           localStorage.setItem("xidentityId",res.code);
-                           localStorage.setItem("xorgId",this.roleForm.region);
-                           localStorage.setItem("xflag", this.flag);
-                            this.$router.push({
-                                path:'/userList'
-                            })
-                       })
-                   })
-  
-        },
-
-
-
-
+       
 
         // 改变语言，国际化相关
         // changeLang() {

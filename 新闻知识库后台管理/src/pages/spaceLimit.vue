@@ -5,20 +5,27 @@
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
         </div> -->
         <div class="space-limit">
-            <modify-space-batch 
-             :selectAnyData="selectAnyData" 
-            :listParam="listParam"
-             @spaceLimitSuccess="spaceLimitSuccess" 
-             class="modify-space-batch">
-                <span slot="iconName">批量编辑</span>
-            </modify-space-batch>
+            <div class="space-wrap">
+                    <modify-space-batch 
+                    v-if="isSuperAdmin"
+                    :selectAnyData="selectAnyData" 
+                    :listParam="listParam"
+                    @spaceLimitSuccess="spaceLimitSuccess" 
+                    class="modify-space-batch">
+                        <span slot="iconName">批量编辑</span>
+                    </modify-space-batch>
 
-             <div class="selectSearch">
-                <el-input v-model="listParam.keywords"
-                 suffix-icon="el-icon-search" 
-                 :placeholder="placeholdertip" 
-                 @keyup.enter.native="searchUser(listParam.keywords)"></el-input>
+                    <div class="selectSearch">
+                        <el-input v-model="listParam.keywords"
+                        suffix-icon="el-icon-search" 
+                        :placeholder="placeholdertip" 
+                        @keyup.enter.native="searchUser(listParam.keywords)"></el-input>
+                    </div>
+
             </div>
+           
+
+           
 
             <div class="total-space" v-if="occupy">
                 <el-progress :percentage="occupy" class="processBar" ></el-progress>
@@ -63,7 +70,7 @@
                         </el-table-column>
                         <el-table-column prop="yuJing" label="是否满报警" >
                         </el-table-column>
-                        <el-table-column label="操作" >
+                        <el-table-column label="操作"  v-if="isSuperAdmin">
                             <template slot-scope="scope">
                                 <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
                                 <reset-space :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></reset-space>
@@ -86,7 +93,7 @@
                         </el-table-column>
                         <el-table-column prop="yuJing" label="是否满报警" >
                         </el-table-column>
-                        <el-table-column label="操作">
+                        <el-table-column label="操作"  v-if="isSuperAdmin">
                             <template slot-scope="scope">
                                 <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
                                 <reset-space :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></reset-space>
@@ -136,8 +143,11 @@ export default {
             departTab:true,//部门
             menuLinkActive: 3,      // 菜单高亮
             partListData: [],        // 部门 表格数据
+            personOriginListData:[],
             roomListData: [],       // 组室 表格数据
+            roomOriginListData:[],
             personListData: [],     // 个人 表格数据
+            partOriginListData:[],
             activeName: "1",        // 默认展示tab
             listParam: {            // 获取个人/组室/部门全部空间情况 请求参数
                 pageNo: 1,          // 当前页
@@ -145,13 +155,17 @@ export default {
                 spaceType: "",      // 个人：1 组室：2 部门：3
                 userId:localStorage.getItem("xuserId"),
                 keywords:'',//模糊搜素
-                orgId:localStorage.getItem("xorgId")
+                //orgId:localStorage.getItem("xorgId")
             },
             getSpaceLoading: false,     // 数据加载loading
             spaceCurrentPage: 1,         // 当前页
             spaceTotalCount: 0,          // 总条数
             selectAnyData: [],       // 列表中勾选的数据
             occupy:0,//总占用
+
+            /* 部门或者组室的权限控制 */
+            isSuperAdmin:true,//是否是管理员
+
 
 
         };
@@ -163,11 +177,53 @@ export default {
          this.showTotalSpaceFn();        // 获取总占用量
     },
     mounted() {
+        if(localStorage.getItem("xidentityId") == "deptAdmin" || localStorage.getItem("xidentityId") =="groupAdmin"){
+            this.personTab = false;
+            this.activeName = "2";
+            this.isSuperAdmin = false
+        }else{
+             this.isSuperAdmin = true
+        }
     },
 
     methods: {
-        searchUser(){//关键词搜索 
-            this.showSpaceManageList(this.listParam);
+        searchUser(val){//关键词搜索 
+         if(!!val){
+                 if (this.listParam.spaceType == 1) {
+                    this.personListData = this.personListData.filter((item)=>{
+                            return item.object.userName.indexOf(val) > -1
+                    })
+                }else if(this.listParam.spaceType == 2){
+                      this.roomListData = this.roomListData.filter((item)=>{
+                            return item.object.groupName.indexOf(val) > -1
+                    })
+
+                }else if(this.listParam.spaceType == 3){
+                      this.partListData = this.partListData.filter((item)=>{
+                            return item.object.deptname.indexOf(val) > -1
+                    })
+                }
+         }else{
+                if (this.listParam.spaceType == 1) {
+                      this.personListData = [...this.personOriginListData];
+                }else if(this.listParam.spaceType == 2){
+                      this.roomListData = [...this.roomOriginListData];
+                }else if(this.listParam.spaceType == 3){
+                      this.partListData = [...this.partOriginListData];
+                }
+
+         }
+        
+
+
+        //this.partListData = 1
+
+
+        //  partListData   roomListData  personListData
+
+
+
+            // this.showSpaceManageList(this.listParam);
         },
         showTotalSpaceFn(){ // 获取总占用量
              this.$api.showTotalSpace().then(res => {
@@ -226,10 +282,13 @@ export default {
                     });
                     if (this.listParam.spaceType == 1) {
                         this.personListData = res.data.dataList;    // 个人 表格数据赋值
+                        this.personOriginListData = res.data.dataList;    
                     } else if (this.listParam.spaceType == 2) {
                         this.roomListData = res.data.dataList;      // 组室 表格数据赋值
+                        this.roomOriginListData = res.data.dataList;     
                     } else if (this.listParam.spaceType == 3) {
                         this.partListData = res.data.dataList;      // 部门 表格数据赋值
+                        this.partOriginListData = res.data.dataList;    
                     }
                     this.spaceTotalCount = res.data.totalRecord;     // 总条数 赋值
                     this.getSpaceLoading = false;        // 数据加载loading关闭
@@ -286,6 +345,9 @@ export default {
                 top: 18px;
                 right: 256px;
          }
+          .space-wrap{
+            height: 50px;
+        }
      } 
     .space-limit{
          .total-space span {
@@ -298,10 +360,11 @@ export default {
 </style>
 <style  lang="scss">
     .selectSearch{
-        margin-top: 10px;
+        margin-top: 6px;
         margin-right:20px;
-        display: block;
+        display: inline-block;
         float: right;
+        right: 20px;
         .el-input{
                 width: 230px;
         }
