@@ -406,23 +406,21 @@ export default {
             this.getUserLists(this.getListData);        // 刷新列表
         },
         // 模糊查询
-        searchUser(arg1){ // 刷新列表
+        searchUser(arg1){ 
             if(arg1 == "dept"){
-                if(!this.deptvalue){
-                    this.deptForm.PageNo = 1 
-                }
                 this.deptForm.keywords = this.deptvalue;
+                this.deptForm.PageNo = 1;
                 this.findDeptFn(this.deptForm,"dept")
-                
+                this.loadSignDept = true;
+        
+            }else if(arg1 == "group"){
+                this.groupForm.PageNo = 1 
+                this.groupForm.keywords = this.groupvalue;
+                this.findDeptFn(this.groupForm,"group")
+                this.loadSignGroup = true;
             }else if(arg1 == "user"){
                  this.getListData.keywords = this.value;
                  this.getUserLists(this.getListData);  
-            }else if(arg1 == "group"){
-                 if(!this.groupvalue){
-                    this.groupForm.PageNo = 1 
-                 }
-                this.groupForm.keywords = this.groupvalue;
-                this.findDeptFn(this.groupForm,"group")
             }
                 
         },

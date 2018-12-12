@@ -25,7 +25,6 @@ export default {
     methods: {
         // 重置按钮 点击事件
         resetSpace(thisSpace){
-            console.log('使用情况',thisSpace);
             this.$confirm('是否确认设置为默认容量?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',

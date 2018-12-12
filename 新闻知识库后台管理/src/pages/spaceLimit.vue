@@ -32,7 +32,7 @@
             <el-tabs v-model="activeName" @tab-click="spaceTabsClick" v-loading="getSpaceLoading">
                 <el-tab-pane label="个人" name="1" v-if="personTab">
                     <el-table ref="multipleTable" :data="personListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
-                        <el-table-column type="selection" width="45">
+                        <el-table-column type="selection" width="45"  v-if="isSuperAdmin">
                         </el-table-column>
                         <el-table-column prop="object.userName" label="名称">
                         </el-table-column>
@@ -55,7 +55,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="组室" name="2" v-if="groupTab">
                     <el-table ref="multipleTable" :data="roomListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
-                        <el-table-column type="selection" width="55">
+                        <el-table-column type="selection" width="55"  v-if="isSuperAdmin">
                         </el-table-column>
                         <el-table-column prop="object.groupName" label="组室" >
                         </el-table-column>
@@ -78,7 +78,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="部门" name="3" v-if="departTab">
                     <el-table ref="multipleTable" :data="partListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
-                        <el-table-column type="selection" width="55">
+                        <el-table-column type="selection" width="55"  v-if="isSuperAdmin">
                         </el-table-column>
                         <el-table-column prop="object.deptname" label="部门" >
                         </el-table-column>

@@ -38,7 +38,7 @@ export default {
     methods: {
         // 修改权限按钮 点击事件
         alterAuthority(thisAuthority){
-            console.log('该权限',thisAuthority);
+           // console.log('该权限',thisAuthority);
             this.getAuthorityByAuthorityId(thisAuthority.authorityId);      // 获取该条权限的信息 接口调用
         },
         // 修改权限弹框确认按钮 点击事件

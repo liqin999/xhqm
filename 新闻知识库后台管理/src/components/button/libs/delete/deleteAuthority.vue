@@ -14,7 +14,7 @@ export default {
     },
     methods: {
         deleteAuthority(thisAuthority){
-            console.log('该权限',thisAuthority);
+            // console.log('该权限',thisAuthority);
             this.$confirm('是否删除此权限?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
