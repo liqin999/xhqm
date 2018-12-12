@@ -5,14 +5,12 @@
             <menu-nav :menuLinkActive="menuLinkActive"></menu-nav>
         </div> -->
         <div class="list-content">
-            <!-- 模糊搜索 -->
-
-            <div class="add-list">
+            <!-- <div class="add-list">
                     <span @click.stop="addUser" class="old-space">
                         <i class="el-icon-ump-tianjia"></i>
                         <span>新增用户</span>
                      </span>
-            </div>
+            </div> -->
             <div class="select">
                 <el-input v-model="value" 
                 suffix-icon="el-icon-search" 
@@ -45,24 +43,24 @@
                     <el-table-column label="部门">
                         <template slot-scope="scope">
                             <span @click="editDept(scope.row)">
-                                 <i class="el-icon-ump-tianjia"></i>
+                                 <i class="el-icon-edit-outline"></i>
                             </span>
                         </template>
                     </el-table-column>
 
                     <el-table-column label="组室" >
                          <template slot-scope="scope">
-                            <span @click="editGroup">
-                                 <i class="el-icon-ump-tianjia"></i>
+                            <span @click="editGroup(scope.row)">
+                                 <i class="el-icon-edit-outline"></i>
                             </span>
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="操作">
+                    <!-- <el-table-column label="操作">
                         <template slot-scope="scope">
                              <i class="el-icon-delete" @click="delUser(scope.row)"></i>
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
                 </el-table>
                 <div class="user-paging">
                     <!-- 分页 -->
@@ -78,52 +76,16 @@
                 </div>
             </div>
         </div>
-        <!-- <template>
-                <el-dialog title="新增用户" :visible.sync="adduserDialog" width="700px" 
-                custom-class="addUserDialogStyle">
-                    <el-form :inline="true"  :model="addUserForm" class="demo-form-inline">
-                        <el-form-item label="用户名:">
-                            <el-input size="small"  @keyup.enter.native="searchUser()"  v-model="addUserForm.keywords" placeholder="用户名"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary"  size="small" @click="searchUser()">查询</el-button>
-                        </el-form-item>
-                    </el-form>
-                   <el-table :data="allUserData"   max-height="250" style="width: 100%"  @selection-change="handleSelectionChangeUser">
-                            <el-table-column type="selection" width="55"></el-table-column>
-                            <el-table-column prop="userName" label="用户名"></el-table-column>
-                            <el-table-column prop="loginName" label="登录名"></el-table-column>
-                            <el-table-column prop="enabled" label="白名单" v-if="isSuperAdmin">
-                                <template slot-scope="scope">
-                                    <el-switch v-model="scope.row.enabled" 
-                                    @change="switchEnabledFn(scope.row)"
-                                    active-color="#13ce66" 
-                                    inactive-color="#ff4949"
-                                    >
-                                    </el-switch>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="角色" v-if="isSuperAdmin">
-                                <template slot-scope="scope">
-                                    <role-manager :role="scope.row" @roleManagement="roleManagement" class="role-manager"></role-manager>
-                                </template>
-                            </el-table-column>
-                    </el-table>
-                    <div slot="footer" class="dialog-footer">
-                        <span class="fl">已选择:{{selectUserNum}}个</span>
-                        <el-button @click="adduserDialog = false">取 消</el-button>
-                        <el-button type="primary" @click="saveAddUser">确 定</el-button>
-                    </div>
-                    </el-dialog>
-        </template> -->
-
+       
+        <!-- 部门弹框 start -->
         <template>
             <el-dialog title="部门信息" 
             lock-scroll="true" 
             class="deptDialog"
+            v-if="deptDialog"
             :visible.sync="deptDialog"
              width="300px">
-                <div v-loadmore="loadMore">
+                <div v-loadmore:dept="loadMore">
                     <div class="select">
                         <el-input v-model="deptvalue" 
                         suffix-icon="el-icon-search" 
@@ -135,7 +97,7 @@
                         <el-scrollbar>
                             <el-checkbox-group v-model="deptCheckList">
                                         <el-checkbox 
-                                        v-for="item in deptAllList"
+                                         v-for="item in deptAllList"
                                         :key="item.orgId" 
                                         class="che" 
                                         :label="item.orgId">{{item.deptname}}</el-checkbox>
@@ -145,10 +107,47 @@
                 </div>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="deptDialog = false">取 消</el-button>
-                    <el-button type="primary" @click="addDeptFn">确 定</el-button>
+                    <el-button type="primary" @click="updateUserDepOrGropFn('dept')">确 定</el-button>
                 </div>
                 </el-dialog>
-        </template>    
+        </template>   
+        <!-- 部门弹框 end --> 
+
+         <!-- 组室弹框 start --> 
+         <template>
+            <el-dialog title="组室信息" 
+            lock-scroll="true" 
+            class="deptDialog"
+            v-if="groupDialog"
+            :visible.sync="groupDialog"
+             width="300px">
+                <div v-loadmore:group="loadMore">
+                    <div class="select">
+                        <el-input v-model="groupvalue" 
+                        suffix-icon="el-icon-search" 
+                        @keyup.enter.native="searchUser('group')"
+                        placeholder="搜索组室信息" >
+                    </el-input>
+                    </div>
+                    <div class="list">
+                        <el-scrollbar>
+                            <el-checkbox-group v-model="groupCheckList">
+                                        <el-checkbox 
+                                        v-for="item in groupAllList"
+                                        :key="item.orgId" 
+                                        class="che" 
+                                        :label="item.orgId">{{item.groupName}}</el-checkbox>
+                            </el-checkbox-group>
+                        </el-scrollbar>
+                    </div>
+                </div>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="deptDialog = false">取 消</el-button>
+                    <el-button type="primary" @click="updateUserDepOrGropFn('group')">确 定</el-button>
+                </div>
+                </el-dialog>
+        </template>  
+         <!-- 组室弹框 start -->   
     </div>
 </template>
 
@@ -180,75 +179,17 @@ export default {
             userTotalCount: 0,          // 总条数
             userCurrentPage: 1,         // 当前页
             value: '',
-            adduserDialog:false,//新增用户的弹框
-            selectUserNum:0,//选中的用户数
-            allUserData:[//用户列表
-                {
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }
-                , {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }
-                , {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }
-                , {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }
-                , {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }
-              ],
-
+            
             userformLabelWidth:"120px",
             /* 部门或者组室的权限控制 */
             isSuperAdmin:true,//是否是管理员
-             multipleSelection: [],
-             addUserForm: {
-                flag: 0,
-                pageSize:10,
-                PageNo:1,
-                keywords:'',
-             },
+          
              page:1,
-             loadSign:true,
+             loadSignDept:true,//滚动加载部门或者组室
+             loadSignGroup:true,
              deptDialog:false,//部门弹框
              deptCheckList:[],//部门选中的值
-             deptAllList:[],
+             deptAllList:[],//所有的部门信息
              deptvalue:'',//部门搜索
              deptForm:{
                  flag : 1,
@@ -257,21 +198,18 @@ export default {
                  keywords:'',
              },
              deptTotalPage:10,//部门的总页数
-
-             groupForm:{
-                flag : 1,
+             tempUserId:null,//弹框临时的用户id
+            groupDialog:false,
+            groupvalue:'',
+            groupCheckList:[],
+            groupAllList:[],
+            groupForm:{
+                 flag : 2,
                  pageSize:20,
                  PageNo:1,
                  keywords:'',
              },
-
-             tempUserId:null,//弹框临时的用户id
-
-            
-
-        
-
-
+            groupTotalPage:10,//组室的总页数
 
 
 
@@ -285,9 +223,6 @@ export default {
              this.isSuperAdmin = true
         }
         this.getUserLists(this.getListData);        // 查询全部用户 接口调用
-
-        this.findDeptFn(this.deptForm);
-
     },
     directives:{
         loadmore(el,binding) {
@@ -296,48 +231,77 @@ export default {
                    let sign = 200;
                    const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight
                     if( this.scrollTop + this.offsetHeight + sign >= this.scrollHeight){
-                        binding.value()
+                        binding.value(binding.arg)
                     }
                 })
             }
     },
     methods: {
         //查询部门后者组室
-        findDeptFn(paramData){
+        findDeptFn(paramData,str){
              this.$api.findDepOrGroup(paramData).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
-                    this.deptAllList = res.data.dataList;
-                    this.deptTotalPage = res.data.totalPage;
-                    this.loadSign = true;
+                    if(str == 'dept'){
+                         this.deptAllList = res.data.dataList;
+                         this.deptTotalPage = res.data.totalPage;
+                       
+                    }else if(str == 'group'){
+                         this.groupAllList = res.data.dataList;
+                         this.groupTotalPage = res.data.totalPage;
+                       
+                    }
+                   
                 });
             });
         },
-        loadMore () {
-            let _this = this;
-            if (this.loadSign) {
-                this.loadSign = false
-                this.deptForm.PageNo++
-                if (this.deptForm.PageNo >  this.deptTotalPage) {
-                   return
-                }
-                this.$api.findDepOrGroup(this.deptForm).then(res => {
-                    this.$Fn.errorCode(res.result).then(() => {
-                        res.data.dataList.forEach(function(val,index){
-                            if( _this.deptAllList.indexOf(val) == -1){
-                                  _this.deptAllList.push(val);
-                            }
+        loadMore (str) {
+            let _this  = this;
+            if(str == 'dept'){
+                if(this.loadSignDept){
+                    this.loadSignDept = false
+                    this.deptForm.PageNo++
+                    if (this.deptForm.PageNo >  this.deptTotalPage) {
+                       return;
+                    }
+                    this.$api.findDepOrGroup(this.deptForm).then(res => {
+                        this.$Fn.errorCode(res.result).then(() => {
+                            res.data.dataList.forEach(function(val,index){
+                                if( _this.deptAllList.indexOf(val) == -1){
+                                    _this.deptAllList.push(val);
+                                }
+                            });
+                            _this.loadSignDept = true;
                         });
-                        _this.loadSign = true;
                     });
-                });
+
+                }
+            }else if(str == 'group'){
+                if(this.loadSignGroup){
+                    this.loadSignGroup = false;
+                    this.groupForm.PageNo++;
+                    if (this.groupForm.PageNo >  this.groupTotalPage) {
+                       return;
+                    }
+                    this.$api.findDepOrGroup(this.groupForm).then(res => {
+                        this.$Fn.errorCode(res.result).then(() => {
+                            res.data.dataList.forEach(function(val,index){
+                                if( _this.groupAllList.indexOf(val) == -1){
+                                    _this.groupAllList.push(val);
+                                }
+                            });
+                            _this.loadSignGroup = true;
+                        });
+                    });
+                }
             }
+
         },
         //部门弹框
         editDept(row){
             this.deptForm.keywords = "";
             this.deptForm.PageNo = 1;
             this.deptvalue= "";
-            this.findDeptFn(this.deptForm);
+            this.findDeptFn(this.deptForm,'dept');
             this.deptDialog = true;
             this.tempUserId = row.userId;
             this.deptCheckList =[];//弹框的部门选中的值清空
@@ -353,11 +317,37 @@ export default {
             });
         },
 
-        addDeptFn(){
-            let params = {
-                userId:this.tempUserId,
-                ids:this.deptCheckList,
-                flag:1
+        //组室弹框
+        editGroup(row){
+            this.groupForm.keywords = "";
+            this.groupForm.PageNo = 1;
+            this.groupvalue= "";
+            this.findDeptFn(this.groupForm,'group');
+            this.groupDialog = true;
+            this.tempUserId = row.userId;
+            this.groupCheckList =[];//弹框的部门选中的值清空
+            this.$api.findAlreadyGroup({ //匹配已有的部门信息
+                userId:row.userId
+            }).then(res => {
+                    let data = res.code;
+                    if(data.length > 0){
+                        data.forEach((item,index)=>{
+                          this.groupCheckList.push(item.orgId)
+                        })
+                    }
+            });
+        },
+
+        updateUserDepOrGropFn(str){
+            let params ={
+                  userId:this.tempUserId,
+            }
+            if(str == 'dept'){
+                params.ids = this.deptCheckList;
+                params.flag = 1;
+            }else if(str == 'group'){
+                params.ids = this.groupCheckList;
+                params.flag = 2;
             }
              this.$api.updateUserDepOrGrop(params).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
@@ -370,26 +360,10 @@ export default {
                       this.getUserLists(this.getListData);// 刷新列表
                 });
             });
-
-        
             this.deptDialog = false
+            this.groupDialog = false
         },
-        //组室弹框
-        editGroup(){
-
-        },
-
-        handleSelectionChangeUser(val){//保存值
-            this.multipleSelection = val;
-            this.selectUserNum = val.length;
-        },
-        addUser(){ //新增用户弹框
-           this.adduserDialog = true;
-           this.getRemainUserList(this.addUserForm);
-        },
-        saveAddUser(){
-            console.log(this.multipleSelection);
-        },
+       
         delUser(row){//删除用户
                 this.$confirm('是否删除此用户?', '提示', {
                     confirmButtonText: '确定',
@@ -397,7 +371,6 @@ export default {
                     type: 'warning'
                 }).then(() => {
                     //调用ajax的方式 进行删除
-
 
                 }).catch(() => {
                     this.$message({
@@ -444,11 +417,17 @@ export default {
                     this.deptForm.PageNo = 1 
                 }
                 this.deptForm.keywords = this.deptvalue;
-                this.findDeptFn(this.deptForm)
+                this.findDeptFn(this.deptForm,"dept")
                 
             }else if(arg1 == "user"){
                  this.getListData.keywords = this.value;
                  this.getUserLists(this.getListData);  
+            }else if(arg1 == "group"){
+                 if(!this.groupvalue){
+                    this.groupForm.PageNo = 1 
+                 }
+                this.groupForm.keywords = this.groupvalue;
+                this.findDeptFn(this.groupForm,"group")
             }
                 
         },
@@ -467,16 +446,7 @@ export default {
                 });
             });
         },
-        //查询剩余的用户信息
-        getRemainUserList(reqData){
-             this.$api.getUserLists(reqData).then(res => {
-                this.$Fn.errorCode(res.result).then(() => {
-                    this.allUserData = res.data.dataList;  // 表格数据赋值
-                     this.getUserLoading = false;        // 表格加载loading关闭
-                     this.allUserTotalCount = res.data.totalRecord;
-                });
-            });
-        },
+       
       
     }
 };
@@ -504,14 +474,14 @@ export default {
         float: right;
         margin-right: 12px;
     }
-    .add-list{
+    /* .add-list{
         float:left;
         padding:15px 0 15px 20px;
         cursor: pointer;
     }
     .add-list:hover{
          color:#0682c8
-    }
+    } */
    
 </style>
 
@@ -528,15 +498,7 @@ export default {
     .list-content .select .el-input__icon{
         line-height: 25px;
     }
-    .addUserDialogStyle{
-        .el-dialog__body{
-            padding-top: 0px;
-           
-        }
-        .fl{
-            float: left;
-        }
-    }
+   
     .deptDialog{
         .el-dialog__body{
             padding-top: 0px;

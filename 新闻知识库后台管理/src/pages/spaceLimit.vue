@@ -213,17 +213,7 @@ export default {
                 }
 
          }
-        
-
-
-        //this.partListData = 1
-
-
-        //  partListData   roomListData  personListData
-
-
-
-            // this.showSpaceManageList(this.listParam);
+  
         },
         showTotalSpaceFn(){ // 获取总占用量
              this.$api.showTotalSpace().then(res => {
