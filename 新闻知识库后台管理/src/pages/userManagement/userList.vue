@@ -152,13 +152,13 @@
 <script>
 // import menuNav from "@/pages/libs/menu/menuNav"
 import roleManager from "@/components/button/libs/userManagement/roleManager"
-import addDepOrGroup from "@/components/button/libs/userManagement/addDepOrGroup"
+// import addDepOrGroup from "@/components/button/libs/userManagement/addDepOrGroup"
 import { userMixins } from "./mixins/index.js"
 export default {
     mixins: [userMixins],
     components: {
         roleManager,
-        addDepOrGroup
+        // addDepOrGroup
     },
     data() {
         return {
@@ -433,6 +433,7 @@ export default {
 
         // 查询全部用户 接口
         getUserLists(reqData) {
+            this.getUserLoading = true;
             this.$api.getUserLists(reqData).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
                     this.userData = res.data.dataList;  // 表格数据赋值

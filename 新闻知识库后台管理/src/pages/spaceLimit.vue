@@ -25,8 +25,6 @@
             </div>
            
 
-           
-
             <div class="total-space" v-if="occupy">
                 <el-progress :percentage="occupy" class="processBar" ></el-progress>
                   <span>总占用</span>
@@ -259,6 +257,7 @@ export default {
 
         // 获取个人/组室/部门全部空间情况 接口
         showSpaceManageList(reqData) {
+             this.getSpaceLoading = true;        // 数据加载loading开始
             this.$api.showSpaceManageList(reqData).then(res => {
                 this.$Fn.errorCode(res.result).then(() => {
                     res.data.dataList && res.data.dataList.forEach(item => {
