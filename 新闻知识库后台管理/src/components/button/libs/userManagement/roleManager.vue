@@ -1,7 +1,7 @@
 <template>
     <div>
         <span @click.stop="roleManage(role)">
-            <i class="el-icon-ump-zhanghaoquanxianguanli" title="角色管理"></i>
+            <i class="el-icon-edit-outline" title="角色管理"></i>
             <slot name="iconName"></slot>
         </span>
         <!-- 弹框 -->

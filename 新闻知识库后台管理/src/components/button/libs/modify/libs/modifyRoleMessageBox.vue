@@ -8,11 +8,11 @@
                 <el-form-item label="角色描述" label-width="90px">
                     <el-input v-model="modifyRoleParam.roleDesc" placeholder="描述内容" @keyup.enter.native='alterRoleConfirm()'></el-input>
                 </el-form-item>
-                <el-form-item label="选择权限" label-width="90px">
+                <!-- <el-form-item label="选择权限" label-width="90px">
                     <el-checkbox-group v-model="propsData.checkedRole" @change="checkRoleChange">
                         <el-checkbox v-for="item in propsData.roles" :label="item.authorityId" :key="item.authorityId">{{item.authorityName}}</el-checkbox>
                     </el-checkbox-group>
-                </el-form-item>
+                </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="propsData.modifyRoleShow = false">取 消</el-button>

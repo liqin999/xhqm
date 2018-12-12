@@ -1,6 +1,9 @@
 <template>
     <div class="user-manager">
-        <el-dialog title="角色管理" :visible.sync="propsData.userManageShow" width="30%">
+        <el-dialog title="角色管理" 
+         custom-class="roleMyClass"
+        :visible.sync="propsData.userManageShow"
+         width="300px">
             <!-- <div class="white-list">
                 <span>白名单</span>
 			    <el-switch 
@@ -10,11 +13,16 @@
                     @change="changeSwitch">
                 </el-switch>
             </div> -->
+            
             <div class="role-manage">
+
+                  
+
+
                 <!-- <span>角色管理</span> -->
-                <div class="management" v-loading="propsData.getRolesLoading">
+                <div class="management" style="word-wrap: break-word; word-break: normal;" v-loading="propsData.getRolesLoading">
                     <el-checkbox-group v-model="propsData.checkedrole" @change="checkedRoleChange">
-                        <el-checkbox v-for="item in propsData.allRoles" :label="item.roleId" :key="item.roleId">{{item.roleName}}</el-checkbox>
+                        <el-checkbox class="che" v-for="item in propsData.allRoles" :label="item.roleId" :key="item.roleId">{{item.roleName}}</el-checkbox>
                     </el-checkbox-group>
                 </div>
             </div>
@@ -48,7 +56,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped >
     .user-manager .el-dialog .white-list {
         margin-bottom: 10px;
         margin-left: 15px;
@@ -62,4 +70,22 @@ export default {
     .user-manager .el-dialog .role-manage .management {
         padding-top: 10px;
     }
+    .user-manager .el-dialog .role-manage .management .che{
+        height: 30px;
+        line-height: 30px;
+        display: block;
+        margin-left: 20px;
+    }
+    
 </style>
+
+<style lang="scss">
+    .roleMyClass{
+        .el-dialog__body{
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin:0;
+        }
+    }
+</style>
+

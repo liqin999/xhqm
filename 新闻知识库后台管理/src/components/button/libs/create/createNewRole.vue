@@ -60,14 +60,17 @@ export default {
         // 新增角色弹框 确认按钮
         addRoleConfirm(){
             if (this.addRoleParame.roleName != ''){     // 角色名称为必填
-                if (this.addRoleParame.authorites.length != 0){     // 权限选择不能为空
-                    this.addRole(this.addRoleParame);       // 新增角色 接口调用
-                } else {
-                    this.$message({
-                        message: '请至少选择一个权限',
-                        type: 'warning'
-                    });
-                }
+                // if (this.addRoleParame.authorites.length != 0){     // 权限选择不能为空
+                //     this.addRole(this.addRoleParame);       // 新增角色 接口调用
+                // } else {
+                //     this.$message({
+                //         message: '请至少选择一个权限',
+                //         type: 'warning'
+                //     });
+                // }
+                 this.addRole(this.addRoleParame);       // 新增角色 接口调用
+
+                
             } else {
                 this.$message({
                     message: '请输入角色名称',

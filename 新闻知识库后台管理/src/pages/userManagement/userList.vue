@@ -19,7 +19,7 @@
                 </el-input>
             </div>
             <div class="user-list clearfix">
-                <el-table :data="userData"  style="width: 100%" v-loading="getUserLoading">
+                <el-table :data="userData" tooltip-effect="dark"  style="width: 100%" v-loading="getUserLoading">
                     <el-table-column prop="userName" label="用户名"></el-table-column>
 
                     <el-table-column prop="loginName" label="登录名"></el-table-column>
@@ -34,13 +34,14 @@
                             </el-switch>
                         </template>
                     </el-table-column>
-                    <el-table-column label="角色" v-if="isSuperAdmin">
+                    <el-table-column label="角色" show-overflow-tooltip v-if="isSuperAdmin">
                         <template slot-scope="scope">
                             <role-manager :role="scope.row" @roleManagement="roleManagement" class="role-manager"></role-manager>
+                             <span>{{switchRole(scope.row.roles)}}</span>
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="部门">
+                    <el-table-column label="部门" show-overflow-tooltip>
                         <template slot-scope="scope">
                             <span @click="editDept(scope.row)">
                                  <i class="el-icon-edit-outline"></i>
@@ -48,7 +49,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="组室" >
+                    <el-table-column label="组室" show-overflow-tooltip >
                          <template slot-scope="scope">
                             <span @click="editGroup(scope.row)">
                                  <i class="el-icon-edit-outline"></i>
@@ -207,6 +208,7 @@ export default {
                  keywords:'',
              },
             groupTotalPage:10,//组室的总页数
+            allRoles:[],//所有的角色
 
         };
     },
@@ -218,6 +220,7 @@ export default {
              this.isSuperAdmin = true
         }
         this.getUserLists(this.getListData);        // 查询全部用户 接口调用
+        this.getAllRoleList();//获得所有的角色
     },
     directives:{
         loadmore(el,binding) {
@@ -232,6 +235,33 @@ export default {
             }
     },
     methods: {
+        switchRole(roles){
+            let ary = [];
+            for(let i=0;i<roles.length;i++){
+                for(let j=0;j<this.allRoles.length;j++){
+                    if(roles[i] == this.allRoles[j].roleId){
+                        if(ary.indexOf(this.allRoles[j].roleName) == -1){
+                            ary.push(this.allRoles[j].roleName)
+                        }
+                    }
+                }
+            }
+            return ary.join(",");
+            
+        },
+        getAllRoleList() {//获得所有的角色
+            return new Promise((resolve,reject)=>{
+                   this.$api.getAllRoleList({
+                       userId:localStorage.getItem("xuserId")
+                    }).then(res => {
+                        this.$Fn.errorCode(res.result).then(() => {
+                            this.allRoles = res.data;
+                            resolve(res.data)
+                        });
+                    });
+            })
+          
+        },
         //查询部门后者组室
         findDeptFn(paramData,str){
              this.$api.findDepOrGroup(paramData).then(res => {
@@ -462,6 +492,7 @@ export default {
     }
     .list-content .user-list .el-table .role-manager {
         cursor: pointer;
+        display: inline-block
     }
     
     .user-paging {

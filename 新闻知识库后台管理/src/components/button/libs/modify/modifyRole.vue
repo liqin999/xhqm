@@ -35,7 +35,7 @@ export default {
                 roleId: "",         // 当前角色id
                 roleName: "",       // 新的角色名称
                 roleDesc: "",       // 新的角色描述
-                authorites: []      // 新的角色权限
+                //authorites: []      // 新的角色权限
             }
         }
     },
@@ -44,7 +44,7 @@ export default {
         alterRole(thisRole){
             console.log('该角色',thisRole);
             this.modifyRoleData.roles = [];         // 清空全部权限 重新赋值
-            this.modifyRoleParam.authorites = thisRole.authorites;
+           // this.modifyRoleParam.authorites = thisRole.authorites;
             this.modifyRoleParam.roleId = thisRole.roleId;      // 参数：当前角色id 赋值
             this.modifyRoleParam.roleName = thisRole.roleName;      // 参数：旧的角色名称 赋值
             this.modifyRoleParam.roleDesc = thisRole.roleDesc;      // 参数：旧的角色描述 赋值
@@ -60,14 +60,16 @@ export default {
         // 修改角色弹框 确认按钮
         alterRoleConfirm(){
             if (this.modifyRoleParam.roleName != ''){     // 角色名称为必填
-                if (this.modifyRoleParam.authorites.length != 0){    // 权限选择不能为空
-                    this.modifyRole(this.modifyRoleParam);       // 修改角色 接口调用
-                } else {
-                    this.$message({
-                        message: '权限选择不能为空',
-                        type: 'warning'
-                    });
-                }
+                // if (this.modifyRoleParam.authorites.length != 0){    // 权限选择不能为空
+                //     this.modifyRole(this.modifyRoleParam);       // 修改角色 接口调用
+                // } else {
+                //     this.$message({
+                //         message: '权限选择不能为空',
+                //         type: 'warning'
+                //     });
+                // }
+                this.modifyRole(this.modifyRoleParam);       // 修改角色 接口调用
+
             } else {
                 this.$message({
                     message: '请输入角色名称',

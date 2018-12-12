@@ -58,11 +58,11 @@ export default {
                     linkName: '角色管理',
                     linkPath: "/roleManage"
                 },
-                {
-                    iconName: 'el-icon-ump-erji-quanxianguanli',
-                    linkName: '权限管理',
-                    linkPath: '/authority'
-                },
+                // {
+                //     iconName: 'el-icon-ump-erji-quanxianguanli',
+                //     linkName: '权限管理',
+                //     linkPath: '/authority'
+                // },
                 {
                     iconName: 'el-icon-ump-tijikongjian-xianxing',
                     linkName: '空间限制',
