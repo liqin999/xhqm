@@ -81,7 +81,27 @@ export const showTotalSpace = data => {
 export const authorityManager = data => {
     return req.get("/basicservice/authorityManager/" + data.userId + "/" + data.orgId + "/" +data.flag);
 }
-//   /basicservice/authorityManager/{userId}/{orgId}/{flag}
+
+//查询所有部门或者组室 
+export const findDepOrGroup = data => {
+    return req.post("/basicservice/findDepOrGroup/",data);
+}
+
+//查询已有的组室 
+export const findAlreadyGroup = data => {
+    return req.get("/basicservice/findAlreadyGroup/"+data.userId);
+}
+
+//查询已有的部门 
+export const findAlreadyDept = data => {
+    return req.get("/basicservice/findAlreadyDept/"+data.userId);
+}
+
+//修改用户的部门或则组室的接口
+export const updateUserDepOrGrop = data => {
+    return req.post("/basicservice/updateUserDepOrGrop/" ,data);
+}
+
 
 
 export default {
@@ -102,5 +122,10 @@ export default {
     modifySpace,
     modifySpaceBatch,
     showTotalSpace,
-    authorityManager
+    authorityManager,
+    findDepOrGroup,
+    findAlreadyGroup,
+    findAlreadyDept,
+    updateUserDepOrGrop
+
 }

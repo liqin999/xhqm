@@ -29,7 +29,7 @@ export default {
 		}
 	},
 	mounted(){
-		if(!!getCookie("xuserId")){
+		if(!!getCookie("xidentityId")){
 			this.isShowBtn=true
 		}
 	},
