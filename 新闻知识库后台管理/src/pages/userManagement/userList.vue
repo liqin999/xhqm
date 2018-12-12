@@ -80,7 +80,6 @@
         <!-- 部门弹框 start -->
         <template>
             <el-dialog title="部门信息" 
-            lock-scroll="true" 
             class="deptDialog"
             v-if="deptDialog"
             :visible.sync="deptDialog"
@@ -116,7 +115,6 @@
          <!-- 组室弹框 start --> 
          <template>
             <el-dialog title="组室信息" 
-            lock-scroll="true" 
             class="deptDialog"
             v-if="groupDialog"
             :visible.sync="groupDialog"
@@ -155,7 +153,6 @@
 // import menuNav from "@/pages/libs/menu/menuNav"
 import roleManager from "@/components/button/libs/userManagement/roleManager"
 import addDepOrGroup from "@/components/button/libs/userManagement/addDepOrGroup"
-
 import { userMixins } from "./mixins/index.js"
 export default {
     mixins: [userMixins],
@@ -210,8 +207,6 @@ export default {
                  keywords:'',
              },
             groupTotalPage:10,//组室的总页数
-
-
 
         };
     },
@@ -474,14 +469,6 @@ export default {
         float: right;
         margin-right: 12px;
     }
-    /* .add-list{
-        float:left;
-        padding:15px 0 15px 20px;
-        cursor: pointer;
-    }
-    .add-list:hover{
-         color:#0682c8
-    } */
    
 </style>
 
