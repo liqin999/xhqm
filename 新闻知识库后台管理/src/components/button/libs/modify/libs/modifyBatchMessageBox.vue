@@ -5,9 +5,7 @@
                 <el-form-item label="设置容量值" label-width="90px">
                     <el-input v-model="modifySpaceBatchParam.attachmentLimit" placeholder="100"></el-input>GB
                 </el-form-item>
-                <el-form-item>
-                    <el-button round @click="resetBatch">设为默认容量</el-button>
-                </el-form-item>
+              
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="propsData.modifyBatchShow = false">取 消</el-button>

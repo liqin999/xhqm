@@ -12,8 +12,14 @@
                     :listParam="listParam"
                     @spaceLimitSuccess="spaceLimitSuccess" 
                     class="modify-space-batch">
-                        <span slot="iconName">批量编辑</span>
+                        <span slot="iconName">批量设置容量</span>
                     </modify-space-batch>
+                      <div class="add-list">
+                        <span @click.stop="addMoreThreshold" class="old-space">
+                            <i class="el-icon-ump-tianjia"></i>
+                            <span>批量设置阈值</span>
+                        </span>
+                       </div>
 
                     <div class="selectSearch">
                         <el-input v-model="listParam.keywords"
@@ -36,67 +42,126 @@
                         </el-table-column>
                         <el-table-column prop="object.userName" label="名称">
                         </el-table-column>
-                        <el-table-column prop="object.attachmentLimit" label="空间容量" >
+                        <el-table-column label="空间容量(GB)" >
+                            <template slot-scope="scope">
+                                <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
+                                <span style="margin-left:3px">{{scope.row.GB}}</span>
+                            </template>
                         </el-table-column>
                         <el-table-column prop="scale" label="使用情况">
                             <template slot-scope="scope" >
-                                <el-progress :percentage="scope.row.scale" ></el-progress>
+                                <el-progress 
+                                :percentage="scope.row.scale"
+                                :color="scope.row.yuJing == '是' ? '#ea7a7a':'#0682c8'"
+                                 ></el-progress>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="yuJing" label="是否满报警">
+                         <el-table-column label="阈值(%)" >
+                              <template slot-scope="scope">
+                                   <span @click="editThreshold(scope.row.object)">
+                                        <i class="el-icon-edit-outline"></i>
+                                  </span>
+                                   <span>
+                                       {{scope.row.object.threshold}}
+                                   </span>
+                              </template>
                         </el-table-column>
-                        <el-table-column label="操作" width="80">
+                        <el-table-column label="是否满报警">
+                            <template slot-scope="scope">
+                                    <span v-bind:style="{'color':scope.row.yuJing == '是' ? '#ea7a7a':'#606266'}" >{{scope.row.yuJing}}</span>
+                            </template>
+                        </el-table-column>
+                        <!-- <el-table-column label="操作" width="80" style="display:none">
                             <template slot-scope="scope">
                                 <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
                                 <reset-space :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></reset-space>
                             </template>
-                        </el-table-column>
+                        </el-table-column> -->
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="组室" name="2" v-if="groupTab">
                     <el-table ref="multipleTable" :data="roomListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
-                        <el-table-column type="selection" width="55"  v-if="isSuperAdmin">
+                        <el-table-column type="selection" width="45"  v-if="isSuperAdmin">
                         </el-table-column>
                         <el-table-column prop="object.groupName" label="组室" >
                         </el-table-column>
-                        <el-table-column prop="object.attachmentLimit" label="空间容量" >
+                       <el-table-column label="空间容量(GB)" >
+                            <template slot-scope="scope">
+                                <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
+                                <span style="margin-left:3px">{{scope.row.GB}}</span>
+                            </template>
                         </el-table-column>
                         <el-table-column prop="scale" label="使用情况" >
                             <template slot-scope="scope">
-                                <el-progress :percentage="scope.row.scale" ></el-progress>
+                                <el-progress 
+                                :color="scope.row.yuJing == '是' ? '#ea7a7a':'#0682c8'"
+                                :percentage="scope.row.scale" ></el-progress>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="yuJing" label="是否满报警" >
+                         <el-table-column label="阈值(%)" >
+                              <template slot-scope="scope">
+                                   <span @click="editThreshold(scope.row.object)">
+                                        <i class="el-icon-edit-outline"></i>
+                                  </span>
+                                   <span>
+                                        {{scope.row.object.threshold}}
+                                   </span>
+                              </template>
                         </el-table-column>
-                        <el-table-column label="操作"  v-if="isSuperAdmin">
+                       <el-table-column label="是否满报警">
+                            <template slot-scope="scope">
+                                    <span v-bind:style="{'color':scope.row.yuJing == '是' ? '#ea7a7a':'#606266'}" >{{scope.row.yuJing}}</span>
+                            </template>
+                        </el-table-column>
+                        <!-- <el-table-column label="操作"  v-if="isSuperAdmin" style="display:none">
                             <template slot-scope="scope">
                                 <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
                                 <reset-space :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></reset-space>
                             </template>
-                        </el-table-column>
+                        </el-table-column> -->
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="部门" name="3" v-if="departTab">
                     <el-table ref="multipleTable" :data="partListData" tooltip-effect="dark" style="width: 100%" @selection-change="chooseAnyEdit">
-                        <el-table-column type="selection" width="55"  v-if="isSuperAdmin">
+                        <el-table-column type="selection" width="45"  v-if="isSuperAdmin">
                         </el-table-column>
                         <el-table-column prop="object.deptname" label="部门" >
                         </el-table-column>
-                        <el-table-column prop="object.attachmentLimit" label="空间容量" >
+                        <el-table-column  label="空间容量(GB)" >
+                            <template slot-scope="scope">
+                                <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
+                                <span style="margin-left:3px">{{scope.row.GB}}</span>
+                            </template>
                         </el-table-column>
                         <el-table-column prop="scale" label="使用情况" >
                             <template slot-scope="scope">
-                                <el-progress :percentage="scope.row.scale" ></el-progress>
+                                <el-progress 
+                                 :color="scope.row.yuJing == '是' ? '#ea7a7a':'#0682c8'"
+                                 :percentage="scope.row.scale"
+                                 ></el-progress>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="yuJing" label="是否满报警" >
+                        <el-table-column label="阈值(%)" >
+                              <template slot-scope="scope">
+                                   <span @click="editThreshold(scope.row.object)">
+                                        <i class="el-icon-edit-outline"></i>
+                                  </span>
+                                   <span>
+                                        {{scope.row.object.threshold}}
+                                   </span>
+                              </template>
                         </el-table-column>
-                        <el-table-column label="操作"  v-if="isSuperAdmin">
+                       <el-table-column label="是否满报警">
+                            <template slot-scope="scope">
+                                    <span v-bind:style="{'color':scope.row.yuJing == '是' ? '#ea7a7a':'#606266'}" >{{scope.row.yuJing}}</span>
+                            </template>
+                        </el-table-column>
+                        <!-- <el-table-column label="操作"  v-if="isSuperAdmin" style="display:none">
                             <template slot-scope="scope">
                                 <modify-space-limit :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></modify-space-limit>
                                 <reset-space :thisSpace="scope.row" :listParam="listParam" @spaceLimitSuccess="spaceLimitSuccess"></reset-space>
                             </template>
-                        </el-table-column>
+                        </el-table-column> -->
                     </el-table>
                 </el-tab-pane>
             </el-tabs>
@@ -113,13 +178,29 @@
                 </el-pagination>
             </div>
 	    </div>
+
+        <!-- 设置阈值弹框 threshold  start -->
+        <template>
+             <el-dialog title="阈值大小设置" :visible.sync="thresholdDialogFormVisible" width="350px" custom-class="thresholdDialogForm">
+                <el-form :model="thresholdForm" label-width="80px">
+                    <el-form-item label="设置阈值" label-width="90px"> 
+                       <el-input style="width:170px" v-model="thresholdForm.value" autocomplete="off"></el-input>
+                       <template>
+                           %
+                       </template>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="thresholdDialogFormVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="saveEditThresholdFn">确 定</el-button>
+                </div>
+            </el-dialog>
+        </template>
+        <!-- 设置阈值弹框 end -->
     </div>
 </template>
 
 <script>
-// libs
-// import menuNav from "@/pages/libs/menu/menuNav"
-
 // button
 import modifySpaceLimit from "@/components/button/libs/modify/modifySpaceLimit"
 import resetSpace from "@/components/button/libs/modify/resetSpace"
@@ -163,6 +244,12 @@ export default {
 
             /* 部门或者组室的权限控制 */
             isSuperAdmin:true,//是否是管理员
+            thresholdDialogFormVisible:false,//阈值弹框
+            thresholdForm:{
+                value:0
+            },
+            tempId:null,//在列表中，点击弹框中临时的id值
+            IsBatchThreshold:null,// 单个single  多个more
 
 
 
@@ -185,6 +272,74 @@ export default {
     },
 
     methods: {
+        saveEditThresholdFn(){
+            //判断是批量或者单个修改
+             if( this.IsBatchThreshold == "more"){
+                 let reqData={
+                     ids:this.selectAnyData,
+                     spaceType:this.listParam.spaceType,
+                     threshold:this.thresholdForm.value,
+                 }
+                 this.$api.modifyThresholdBatch(reqData).then(res => {
+                    this.$Fn.errorCode(res.result).then(() => {
+                        if(res.result.code == '0000'){
+                            this.$message({
+                                    message: '修改成功',
+                                    type: 'success'
+                                });
+                        }
+                        this.thresholdDialogFormVisible = false;
+                        this.showSpaceManageList(this.listParam);  
+                    })
+                })
+             }else if(this.IsBatchThreshold == "single"){
+                  let reqData ={
+                        threshold:this.thresholdForm.value,
+                        spaceType:this.listParam.spaceType,
+                        id:this.tempId
+                  }
+                this.$api.modifyThreshold(reqData).then(res => {
+                    this.$Fn.errorCode(res.result).then(() => {
+                        if(res.result.code == '0000'){
+                            this.$message({
+                                    message: '修改成功',
+                                    type: 'success'
+                                });
+                        }
+                        this.thresholdDialogFormVisible = false;
+                        this.showSpaceManageList(this.listParam);  
+                    })
+                })
+           }
+            
+
+        },
+        editThreshold(row){//设置单个阈值
+            this.thresholdDialogFormVisible = true;
+            this.IsBatchThreshold = "single";
+            this.thresholdForm.value =row.threshold;
+            if(this.listParam.spaceType == 1){
+                this.tempId  = row.userId;
+            }else{
+                this.tempId = row.orgId
+            }
+
+        },
+        addMoreThreshold(){
+            if(this.selectAnyData.length == 0){
+                 this.$message({
+                    message: '请至少选择一条数据',
+                    type: 'warning'
+                 });
+                 return
+            }else{
+                this.thresholdForm.value = 0;
+                this.IsBatchThreshold = "more"
+                this.thresholdDialogFormVisible = true
+            }
+
+            
+        },
         searchUser(val){//关键词搜索 
          if(!!val){
                  if (this.listParam.spaceType == 1) {
@@ -236,7 +391,7 @@ export default {
                 });
             } else {
                 val.forEach(item => {
-                    this.selectAnyData.push(item.object.tid);
+                    this.selectAnyData.push(item.object.orgId);
                 });
             }
         },
@@ -336,7 +491,19 @@ export default {
          }
           .space-wrap{
             height: 50px;
-        }
+          }
+          .add-list{
+            display: inline-block;
+            padding: 15px 0 15px 20px;
+          }
+          .old-space{
+              cursor: pointer;
+          }
+          .old-space:hover{
+              color:#409EFF
+          }
+
+
      } 
     .space-limit{
          .total-space span {
@@ -345,6 +512,7 @@ export default {
             margin-right: 203px;
         }
     }
+   
  
 </style>
 <style  lang="scss">
@@ -354,6 +522,9 @@ export default {
         display: inline-block;
         float: right;
         right: 20px;
+        .el-progress__text{
+         width: 48px;
+       }
         .el-input{
                 width: 230px;
         }
@@ -369,16 +540,14 @@ export default {
             }
         }
     }
-</style>
-
-<style lang="scss"> 
-.selectSearch{
-    .el-progress__text{
-        width: 48px;
+     .thresholdDialogForm{
+        .el-dialog__body{
+            padding-bottom: 10px;
+            padding-top:20px;
+        }
     }
-   
-}
-
+    .ft-ea7a7a{//绑定三元运算符
+        color:#ea7a7a
+    }
 </style>
-
 

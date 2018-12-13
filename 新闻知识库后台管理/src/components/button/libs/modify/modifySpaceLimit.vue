@@ -47,7 +47,7 @@ export default {
             if (this.listParam.spaceType == 1){
                 this.modifySpaceParam.id = this.thisSpace.object.userId;     // 修改参数id 赋值
             } else {
-                this.modifySpaceParam.id = this.thisSpace.object.tid;           // 修改参数id 赋值
+                this.modifySpaceParam.id = this.thisSpace.object.orgId;           // 修改参数id 赋值
             }
             this.modifySpaceParam.spaceType = this.listParam.spaceType;     // 修改参数spaceType 赋值
             this.modifySpace(this.modifySpaceParam);    // 修改空间 接口调用

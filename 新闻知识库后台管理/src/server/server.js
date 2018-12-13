@@ -102,7 +102,15 @@ export const updateUserDepOrGrop = data => {
     return req.post("/basicservice/updateUserDepOrGrop/" ,data);
 }
 
+//空间权限中修改单个阈值
+export const modifyThreshold = data => {
+    return req.get("/kbaseservice/modifyThreshold/" +data.threshold + "/" +data.spaceType + "/" +data.id);
+}
 
+//空间权限中批量修改阈值
+export const modifyThresholdBatch = data => {
+    return req.post("/kbaseservice/modifyThresholdBatch/" , data);
+}
 
 export default {
     userLogin,
@@ -126,6 +134,8 @@ export default {
     findDepOrGroup,
     findAlreadyGroup,
     findAlreadyDept,
-    updateUserDepOrGrop
+    updateUserDepOrGrop,
+    modifyThreshold,
+    modifyThresholdBatch
 
 }

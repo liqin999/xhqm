@@ -45,6 +45,7 @@
                         <template slot-scope="scope">
                             <span @click="editDept(scope.row)">
                                  <i class="el-icon-edit-outline"></i>
+                                 <span>{{switchDept(scope.row.departments)}}</span>
                             </span>
                         </template>
                     </el-table-column>
@@ -53,6 +54,7 @@
                          <template slot-scope="scope">
                             <span @click="editGroup(scope.row)">
                                  <i class="el-icon-edit-outline"></i>
+                                 <span>{{switchGroup(scope.row.groups)}}</span>
                             </span>
                         </template>
                     </el-table-column>
@@ -221,6 +223,9 @@ export default {
         }
         this.getUserLists(this.getListData);        // 查询全部用户 接口调用
         this.getAllRoleList();//获得所有的角色
+
+        this.findDeptFn(this.deptForm,"dept")
+        this.findDeptFn(this.groupForm,"group")
     },
     directives:{
         loadmore(el,binding) {
@@ -235,6 +240,38 @@ export default {
             }
     },
     methods: {
+        switchDept(data){//匹配部门
+             let ary = [];
+             if(!data || data.length ==0){
+                 return
+             }
+             for(let i=0;i<data.length;i++){
+                for(let j=0;j<this.deptAllList.length;j++){
+                    if(data[i] == this.deptAllList[j].orgId){
+                        if(ary.indexOf(this.deptAllList[j].deptname) == -1){
+                            ary.push(this.deptAllList[j].deptname)
+                        }
+                    }
+                }
+            }
+            return ary.join(",");
+        },
+        switchGroup(data){//匹配组室
+            let ary = [];
+            if(!data || data.length ==0){
+                 return
+             }
+            for(let i=0;i<data.length;i++){
+                for(let j=0;j<this.groupAllList.length;j++){
+                    if(data[i] == this.groupAllList[j].orgId){
+                        if(ary.indexOf(this.groupAllList[j].groupName) == -1){
+                            ary.push(this.groupAllList[j].groupName)
+                        }
+                    }
+                }
+            }
+            return ary.join(",");
+        },
         switchRole(roles){
             let ary = [];
             for(let i=0;i<roles.length;i++){
